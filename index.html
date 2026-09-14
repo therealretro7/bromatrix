@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bromatrix | Next-Gen IoT, Robotics, UAVs & Custom Hardware R&D Innovation Hub</title>
+    
+    <!-- Google Fonts: Sora, Plus Jakarta Sans, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Sora', 'sans-serif'],
+                        tech: ['Sora', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        aero: {
+                            cyan: '#00f0ff',
+                            emerald: '#00e699',
+                            amber: '#ff9f1c',
+                            blue: '#3b82f6',
+                            purple: '#7928ca',
+                            border: 'rgba(255, 255, 255, 0.12)',
+                        },
+                        obsidian: {
+                            950: '#05070d',
+                            900: '#090d16',
+                            850: '#0e1422',
+                            800: '#141c2e',
+                            card: '#0c1220',
+                        }
+                    },
+                    animation: {
+                        'spin-rotor': 'spinRotor 0.08s linear infinite',
+                        'beacon': 'beaconPulse 1.2s ease-in-out infinite',
+                        'float': 'hoverFloat 4s ease-in-out infinite',
+                        'marquee': 'marqueeScroll 28s linear infinite',
+                    },
+                    keyframes: {
+                        spinRotor: {
+                            '0%': { transform: 'rotate(0deg) scaleX(1)' },
+                            '50%': { transform: 'rotate(180deg) scaleX(0.7)' },
+                            '100%': { transform: 'rotate(360deg) scaleX(1)' }
+                        },
+                        beaconPulse: {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(0.8)' },
+                            '50%': { opacity: '1', transform: 'scale(1.2)' }
+                        },
+                        hoverFloat: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        },
+                        marqueeScroll: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Deep Aerotech Obsidian Theme */
+        :root {
+            --accent-cyan: #00f0ff;
+            --accent-emerald: #00e699;
+            --accent-amber: #ff9f1c;
+        }
+
+        body {
+            background-color: #040711;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-display, .font-tech {
+            font-family: 'Sora', sans-serif;
+            letter-spacing: -0.015em;
+        }
+
+        /* Clean Native Scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05070d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+
+        /* Ambient Blueprint Grid */
+        .bg-aero-grid {
+            background-size: 44px 44px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Liquid Glassmorphism Core */
+        .liquid-glass {
+            background: rgba(12, 18, 32, 0.72);
+            backdrop-filter: blur(24px) saturate(190%) contrast(110%);
+            -webkit-backdrop-filter: blur(24px) saturate(190%) contrast(110%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.2), 
+                        0 20px 40px -15px rgba(0, 0, 0, 0.85);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass:hover {
+            border-color: rgba(0, 240, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.45), 
+                        0 25px 50px -15px rgba(0, 0, 0, 0.95), 
+                        0 0 35px rgba(0, 240, 255, 0.2);
+        }
+
+        /* Dynamic Iridescent Liquid Wave Sheen on Hover */
+        .liquid-glass::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(
+                120deg,
+                transparent 0%,
+                transparent 35%,
+                rgba(255, 255, 255, 0.08) 42%,
+                rgba(0, 240, 255, 0.25) 50%,
+                rgba(0, 230, 153, 0.15) 55%,
+                transparent 65%,
+                transparent 100%
+            );
+            background-size: 260% 260%;
+            background-position: 180% 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, background-position 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 2;
+        }
+
+        .liquid-glass:hover::after {
+            opacity: 1;
+            background-position: 0 180%;
+        }
+
+        /* Fluid Caustic Spotlight */
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: var(--mouse-y, -200px);
+            left: var(--mouse-x, -200px);
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(0, 240, 255, 0.2) 25%,
+                rgba(0, 230, 153, 0.08) 50%,
+                transparent 72%
+            );
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            border-radius: 50%;
+            z-index: 1;
+            filter: blur(6px);
+        }
+
+        .liquid-glass:hover::before {
+            opacity: 1;
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, #00f0ff, #00e699, #3b82f6);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
+            z-index: 9999;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Scroll Reveal Transitions */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Text Gradients */
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #ffffff 10%, #38bdf8 50%, #00f0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-amber {
+            background: linear-gradient(135deg, #ffffff 10%, #fbbf24 50%, #ff9f1c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive 3D Cyber Horizon & Topographic Canvas */
+        #bg-cyber-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Fullscreen Interactive Drone Viewport */
+        #animated-drone-viewport {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 45;
+            overflow: visible;
+        }
+
+        #drone-position-anchor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            will-change: transform;
+            pointer-events: auto;
+            transition: transform 0.08s ease-out;
+        }
+
+        /* Lidar Scanning Cone */
+        .lidar-beam {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 230px;
+            background: linear-gradient(to bottom, rgba(0, 240, 255, 0.35) 0%, rgba(0, 230, 153, 0.08) 55%, transparent 100%);
+            clip-path: polygon(45% 0%, 55% 0%, 100% 100%, 0% 100%);
+            pointer-events: none;
+            animation: lidarScan 2.4s ease-in-out infinite alternate;
+            transition: opacity 0.5s ease;
+        }
+        @keyframes lidarScan {
+            0% { opacity: 0.3; transform: translateX(-50%) rotate(-7deg); }
+            100% { opacity: 0.85; transform: translateX(-50%) rotate(7deg); }
+        }
+
+        /* Dynamic Assembling Drone Mechanics */
+        .drone-part {
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        /* Exploded CAD State */
+        .drone-mode-exploded #part-arm-tl {
+            transform: translate(-38px, -32px) rotate(-12deg);
+        }
+        .drone-mode-exploded #part-arm-tr {
+            transform: translate(38px, -32px) rotate(12deg);
+        }
+        .drone-mode-exploded #part-arm-bl {
+            transform: translate(-38px, 32px) rotate(12deg);
+        }
+        .drone-mode-exploded #part-arm-br {
+            transform: translate(38px, 32px) rotate(-12deg);
+        }
+        .drone-mode-exploded #part-battery {
+            transform: translateY(34px);
+        }
+        .drone-mode-exploded #part-gimbal {
+            transform: translateY(-26px);
+        }
+        .drone-mode-exploded .rotor-prop {
+            animation: none !important;
+            opacity: 0.45;
+        }
+        .drone-mode-exploded .cad-guide {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+        .drone-mode-exploded .lidar-beam {
+            opacity: 0.15;
+        }
+
+        /* Assembled Flight State */
+        .drone-mode-assembled #part-arm-tl,
+        .drone-mode-assembled #part-arm-tr,
+        .drone-mode-assembled #part-arm-bl,
+        .drone-mode-assembled #part-arm-br,
+        .drone-mode-assembled #part-battery,
+        .drone-mode-assembled #part-gimbal {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        .drone-mode-assembled .rotor-prop {
+            opacity: 1;
+        }
+        .drone-mode-assembled .cad-guide {
+            opacity: 0 !important;
+            transform: scale(0.85) !important;
+            pointer-events: none;
+        }
+
+        /* Assembly Lock Pulse Flash */
+        .assembly-snap-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #00f0ff;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            opacity: 0;
+        }
+        .assembly-snap-ring.snap-active {
+            animation: lockFlash 0.75s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+        }
+        @keyframes lockFlash {
+            0% { transform: translate(-50%, -50%) scale(0.6); opacity: 1; border-color: #00f0ff; box-shadow: 0 0 20px #00f0ff; }
+            50% { transform: translate(-50%, -50%) scale(5.5); opacity: 0.85; border-color: #00e699; box-shadow: 0 0 35px #00e699; }
+            100% { transform: translate(-50%, -50%) scale(9); opacity: 0; border-color: #3b82f6; }
+        }
+    </style>
+</head>
+
+<body class="bg-[#040711] text-slate-200 antialiased selection:bg-aero-cyan selection:text-black relative">
+
+    <!-- Top Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Interactive 3D Cyber Topographic & Horizon Wavefield Canvas -->
+    <canvas id="bg-cyber-canvas"></canvas>
+
+    <!-- Subtle Blueprint Ambient Overlay -->
+    <div class="fixed inset-0 bg-aero-grid pointer-events-none z-0 opacity-20"></div>
+
+    <!-- Radial Ambient Ion Spotlights -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-b from-aero-cyan/10 via-transparent to-transparent blur-[160px] pointer-events-none z-0"></div>
+
+    <!-- ========================================================= -->
+    <!-- DYNAMIC ASSEMBLING DRONE VIEWPORT (FULLSCREEN FLIGHT HUD) -->
+    <!-- ========================================================= -->
+    <div id="animated-drone-viewport" class="hidden md:block">
+        <div id="drone-position-anchor">
+            <div class="relative flex flex-col items-center">
+                
+                <!-- Floating Drone Telemetry & Interactive Action Bar -->
+                <div class="mb-2 flex flex-col items-center gap-1.5 select-none pointer-events-auto">
+                    <!-- Status Pill -->
+                    <div id="drone-hud-tag" class="px-3.5 py-1 rounded-full bg-[#070c18]/95 border border-aero-cyan/40 text-[10px] font-mono text-slate-200 shadow-[0_0_20px_rgba(0,240,255,0.3)] flex items-center gap-2 backdrop-blur-md transition-all">
+                        <span id="drone-status-dot" class="w-2 h-2 rounded-full bg-aero-emerald animate-ping"></span>
+                        <span id="drone-telemetry-text">UAV ESCORT // ALT: 14.8m • 3.2 m/s</span>
+                    </div>
+
+                    <!-- Interactive HUD Quick Actions -->
+                    <div class="flex items-center gap-1.5 bg-[#060b16]/90 border border-white/10 p-1 rounded-xl backdrop-blur-md shadow-2xl text-[10px] font-tech font-semibold">
+                        <button id="btn-drone-assembly" onclick="toggleDroneAssembly()" class="px-2.5 py-0.5 rounded-lg bg-aero-cyan/20 border border-aero-cyan/50 text-aero-cyan hover:bg-aero-cyan hover:text-black transition-all flex items-center gap-1.5 active:scale-95" title="Toggle CAD Exploded View vs Assembled Flight">
+                            <i id="assembly-btn-icon" class="fa-solid fa-cubes-stacked text-[9px]"></i>
+                            <span id="assembly-btn-label">Explode View</span>
+                        </button>
+                        <button id="btn-drone-flightmode" onclick="toggleFlightMode()" class="px-2.5 py-0.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:border-aero-emerald/50 transition-all flex items-center gap-1.5 active:scale-95" title="Toggle Full-Screen Autopilot Patrol">
+                            <i class="fa-solid fa-route text-[9px] text-aero-emerald"></i>
+                            <span id="flightmode-btn-label">Autopilot</span>
+                        </button>
+                        <button onclick="triggerDroneAcrobatics()" class="px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-aero-amber hover:border-aero-amber/50 transition-all active:scale-95" title="360° Barrel Roll Stunt">
+                            <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Drone Craft Container (Assembling Vector Airframe) -->
+                <div class="relative w-48 h-36 cursor-pointer pointer-events-auto transition-transform duration-300 hover:scale-105 drone-mode-assembled" id="drone-craft" onclick="triggerDroneAcrobatics()" title="Click drone for 360° Barrel Roll">
+                    
+                    <!-- Lidar Ground Scanner Beam -->
+                    <div class="lidar-beam"></div>
+
+                    <!-- Assembly Lock Energy Pulse Flash -->
+                    <div id="assembly-lock-flash" class="assembly-snap-ring"></div>
+
+                    <!-- Precision Multi-Component Modular SVG Drone -->
+                    <svg viewBox="0 0 240 180" class="w-full h-full drop-shadow-[0_12px_24px_rgba(0,240,255,0.4)] overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        
+                        <!-- CAD Exploded View Guidelines & Engineering Annotations -->
+                        <g class="cad-guide transition-all duration-500 opacity-0">
+                            <!-- Dashed Alignment Tracers -->
+                            <line x1="50" y1="42" x2="105" y2="78" stroke="#00f0ff" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"/>
+                            <line x1="190" y1="42" x2="135" y2="78" stroke="#00e699" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"/>
+                            <line x1="50" y1="138" x2="105" y2="102" stroke="#00f0ff" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"/>
+                            <line x1="190" y1="138" x2="135" y2="102" stroke="#00e699" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"/>
+                            <line x1="120" y1="45" x2="120" y2="68" stroke="#00f0ff" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"/>
+                            <line x1="120" y1="112" x2="120" y2="138" stroke="#ff9f1c" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"/>
+
+                            <!-- Technical Dimension Badges -->
+                            <text x="6" y="24" fill="#00f0ff" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="bold">ARM 01 // 2207 KV</text>
+                            <text x="165" y="24" fill="#00e699" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="bold">ARM 02 // DSHOT</text>
+                            <text x="82" y="174" fill="#ff9f1c" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="bold">POWER // 4S 15.8V</text>
+                            <text x="84" y="20" fill="#00f0ff" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="bold">4K LIDAR GIMBAL</text>
+                        </g>
+
+                        <!-- COMPONENT 1: Top-Left Carbon Arm & Motor Assembly -->
+                        <g id="part-arm-tl" class="drone-part">
+                            <line x1="105" y1="78" x2="50" y2="42" stroke="#1e293b" stroke-width="9" stroke-linecap="round"/>
+                            <line x1="105" y1="78" x2="50" y2="42" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <!-- Motor Bell & Stator -->
+                            <circle cx="50" cy="42" r="11" fill="#0b1324" stroke="#00f0ff" stroke-width="2"/>
+                            <circle cx="50" cy="42" r="4.5" fill="#1e293b" stroke="#ffffff" stroke-width="1.5"/>
+                            <!-- Aerodynamic Carbon Propeller -->
+                            <ellipse cx="50" cy="42" rx="28" ry="6" fill="rgba(0,240,255,0.35)" class="rotor-prop animate-spin-rotor origin-[50px_42px]"/>
+                            <!-- Port Red Navigation Beacon -->
+                            <circle cx="50" cy="42" r="3" fill="#ef4444" class="animate-beacon"/>
+                        </g>
+
+                        <!-- COMPONENT 2: Top-Right Carbon Arm & Motor Assembly -->
+                        <g id="part-arm-tr" class="drone-part">
+                            <line x1="135" y1="78" x2="190" y2="42" stroke="#1e293b" stroke-width="9" stroke-linecap="round"/>
+                            <line x1="135" y1="78" x2="190" y2="42" stroke="#00e699" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <!-- Motor Bell & Stator -->
+                            <circle cx="190" cy="42" r="11" fill="#0b1324" stroke="#00e699" stroke-width="2"/>
+                            <circle cx="190" cy="42" r="4.5" fill="#1e293b" stroke="#ffffff" stroke-width="1.5"/>
+                            <!-- Aerodynamic Carbon Propeller -->
+                            <ellipse cx="190" cy="42" rx="28" ry="6" fill="rgba(0,230,153,0.35)" class="rotor-prop animate-spin-rotor origin-[190px_42px]"/>
+                            <!-- Starboard Green Navigation Beacon -->
+                            <circle cx="190" cy="42" r="3" fill="#10b981" class="animate-beacon"/>
+                        </g>
+
+                        <!-- COMPONENT 3: Bottom-Left Carbon Arm & Motor Assembly -->
+                        <g id="part-arm-bl" class="drone-part">
+                            <line x1="105" y1="102" x2="50" y2="138" stroke="#1e293b" stroke-width="9" stroke-linecap="round"/>
+                            <line x1="105" y1="102" x2="50" y2="138" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <circle cx="50" cy="138" r="11" fill="#0b1324" stroke="#00f0ff" stroke-width="2"/>
+                            <circle cx="50" cy="138" r="4.5" fill="#1e293b" stroke="#ffffff" stroke-width="1.5"/>
+                            <ellipse cx="50" cy="138" rx="28" ry="6" fill="rgba(0,240,255,0.35)" class="rotor-prop animate-spin-rotor origin-[50px_138px]"/>
+                            <circle cx="50" cy="138" r="3" fill="#ef4444" class="animate-beacon"/>
+                        </g>
+
+                        <!-- COMPONENT 4: Bottom-Right Carbon Arm & Motor Assembly -->
+                        <g id="part-arm-br" class="drone-part">
+                            <line x1="135" y1="102" x2="190" y2="138" stroke="#1e293b" stroke-width="9" stroke-linecap="round"/>
+                            <line x1="135" y1="102" x2="190" y2="138" stroke="#00e699" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+                            <circle cx="190" cy="138" r="11" fill="#0b1324" stroke="#00e699" stroke-width="2"/>
+                            <circle cx="190" cy="138" r="4.5" fill="#1e293b" stroke="#ffffff" stroke-width="1.5"/>
+                            <ellipse cx="190" cy="138" rx="28" ry="6" fill="rgba(0,230,153,0.35)" class="rotor-prop animate-spin-rotor origin-[190px_138px]"/>
+                            <circle cx="190" cy="138" r="3" fill="#10b981" class="animate-beacon"/>
+                        </g>
+
+                        <!-- COMPONENT 5: LiPo Power Battery Pack (Lower Module) -->
+                        <g id="part-battery" class="drone-part">
+                            <rect x="100" y="112" width="40" height="20" rx="5" fill="#080e1a" stroke="#ff9f1c" stroke-width="2"/>
+                            <line x1="106" y1="122" x2="134" y2="122" stroke="#ff9f1c" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <circle cx="120" cy="122" r="3" fill="#ff9f1c"/>
+                        </g>
+
+                        <!-- COMPONENT 6: 4K Optical & Lidar Gimbal (Nose Module) -->
+                        <g id="part-gimbal" class="drone-part">
+                            <rect x="106" y="48" width="28" height="18" rx="6" fill="#070c18" stroke="#00f0ff" stroke-width="1.8"/>
+                            <circle cx="120" cy="57" r="5.5" fill="#020617" stroke="#00f0ff" stroke-width="1.5"/>
+                            <circle cx="120" cy="57" r="2.5" fill="#00f0ff" class="animate-ping opacity-75"/>
+                            <circle cx="120" cy="57" r="1.5" fill="#ffffff"/>
+                        </g>
+
+                        <!-- COMPONENT 7: Central Fuselage & Flight Controller Core -->
+                        <g id="part-core" class="drone-part">
+                            <!-- Main Carbon Canopy Shell -->
+                            <rect x="96" y="66" width="48" height="48" rx="14" fill="#070e1d" stroke="#38bdf8" stroke-width="2.2"/>
+                            <!-- Flight Controller Glass Encapsulation -->
+                            <rect x="103" y="73" width="34" height="34" rx="9" fill="#02040a" stroke="#00f0ff" stroke-width="1.5"/>
+                            <!-- MCU Processor & Live Activity Pulse -->
+                            <rect x="111" y="81" width="18" height="18" rx="4" fill="#09182d" stroke="#00f0ff" stroke-width="1"/>
+                            <circle cx="120" cy="90" r="5" fill="#00f0ff" class="animate-ping opacity-60"/>
+                            <circle cx="120" cy="90" r="3" fill="#00f0ff"/>
+                            <!-- High-Intensity Forward Spotlights -->
+                            <circle cx="109" cy="68" r="3.2" fill="#ffffff" filter="drop-shadow(0 0 6px #00f0ff)"/>
+                            <circle cx="131" cy="68" r="3.2" fill="#ffffff" filter="drop-shadow(0 0 6px #00f0ff)"/>
+                            <!-- Bromatrix Chevron Emblem -->
+                            <path d="M116 77 L124 77 L120 81 Z" fill="#00f0ff"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-4 sm:px-8" id="navbar">
+        <div class="max-w-7xl mx-auto liquid-glass rounded-2xl px-6 py-3.5 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3.5 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-aero-cyan via-teal-400 to-aero-emerald p-[1.5px] transition-transform group-hover:scale-105 shadow-[0_0_15px_rgba(0,240,255,0.35)]">
+                    <div class="w-full h-full bg-[#070b14] rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-microchip text-aero-cyan text-lg"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <span class="font-tech font-bold text-lg tracking-wider text-white">BROMATRIX</span>
+                        <span class="w-2 h-2 rounded-full bg-aero-emerald animate-pulse"></span>
+                    </div>
+                    <span class="text-[9px] font-mono tracking-widest text-aero-cyan uppercase -mt-0.5">R&D • IOT • ROBOTICS • UAVS</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-7 font-tech font-semibold text-xs tracking-wider uppercase text-slate-300">
+                <a href="#trainings" class="hover:text-aero-cyan transition-colors">Domains</a>
+                <a href="#gallery" class="hover:text-aero-cyan transition-colors flex items-center gap-1.5">
+                    <span>Field Archive</span>
+                    <span class="bg-aero-cyan/20 text-aero-cyan text-[9px] px-1.5 py-0.5 rounded font-mono">Live</span>
+                </a>
+                <a href="#rd-support" class="hover:text-aero-cyan transition-colors">R&D & Cohorts</a>
+                <a href="#architecture" class="hover:text-aero-cyan transition-colors">Blueprints</a>
+                <a href="#estimator" class="hover:text-aero-cyan transition-colors">Scope Calculator</a>
+                <a href="#ai-assistant" class="hover:text-aero-cyan transition-colors text-aero-cyan font-bold flex items-center gap-1.5">
+                    <i class="fa-solid fa-brain text-xs"></i> AI STEM Engine
+                </a>
+            </nav>
+
+            <!-- CTA & Mobile Trigger -->
+            <div class="flex items-center gap-3">
+                <button onclick="openModal('training')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-aero-cyan to-aero-emerald hover:opacity-95 text-black font-tech font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(0,240,255,0.35)] flex items-center gap-2">
+                    <span>Book Lab / R&D</span>
+                    <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                </button>
+
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-300 hover:text-white rounded-lg bg-white/5 border border-white/10" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars-staggered text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden max-w-7xl mx-auto mt-2 liquid-glass rounded-2xl p-5 flex-col gap-3 text-xs font-tech uppercase tracking-wider">
+            <a href="#trainings" class="mobile-link py-2 border-b border-white/5 hover:text-aero-cyan">Core Domains & Training</a>
+            <a href="#gallery" class="mobile-link py-2 border-b border-white/5 text-aero-cyan flex items-center justify-between font-bold">
+                <span>Field Photo & Media Archive</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+            <a href="#rd-support" class="mobile-link py-2 border-b border-white/5 hover:text-aero-cyan">Custom R&D & Internships</a>
+            <a href="#architecture" class="mobile-link py-2 border-b border-white/5 hover:text-aero-cyan">Hardware Blueprints</a>
+            <a href="#estimator" class="mobile-link py-2 border-b border-white/5 hover:text-aero-cyan">Program Scope Estimator</a>
+            <a href="#ai-assistant" class="mobile-link py-2 hover:text-aero-cyan font-bold text-aero-emerald">Bromatrix AI STEM Advisor</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen pt-36 pb-20 px-4 sm:px-8 flex items-center justify-center z-10 overflow-hidden">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Hero Narrative -->
+            <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                <!-- Status Badge -->
+                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full liquid-glass text-xs font-mono text-aero-cyan shadow-lg">
+                    <span class="w-2 h-2 rounded-full bg-aero-cyan animate-ping"></span>
+                    <span class="font-tech tracking-wider uppercase font-bold">BROMATRIX INNOVATION HUB</span>
+                    <span class="text-slate-600">/</span>
+                    <span class="text-slate-300">EST. HARDWARE ACCREDITATION</span>
+                </div>
+
+                <!-- Main Kinetic Headline -->
+                <h1 class="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl tracking-tight leading-[1.08] text-white">
+                    Pioneering Real <br>
+                    <span class="text-gradient-cyan">Aerospace & STEM</span><br>
+                    <span class="text-gradient-amber">Hardware Intelligence.</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-slate-300 text-base sm:text-lg font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    Empowering top colleges, schools, and tech pioneers through comprehensive hands-on programs in <strong class="text-white font-semibold">Autonomous UAV Drones, Embedded IoT Networks, Robotics Mechatronics, 3D Prototyping</strong>, and turnkey <strong class="text-white font-semibold">Custom Hardware R&D</strong>.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                    <a href="#gallery" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-aero-cyan to-aero-emerald text-black font-tech font-bold text-xs uppercase tracking-wider shadow-[0_0_25px_rgba(0,240,255,0.4)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2.5">
+                        <i class="fa-solid fa-camera-retro text-sm"></i>
+                        <span>Explore Real Photo Archive</span>
+                    </a>
+
+                    <a href="#trainings" class="w-full sm:w-auto px-8 py-4 rounded-xl liquid-glass text-white font-tech font-semibold text-xs uppercase tracking-wider hover:border-aero-cyan transition-all flex items-center justify-center gap-2.5">
+                        <i class="fa-solid fa-layer-group text-aero-cyan"></i>
+                        <span>Training Pillars</span>
+                    </a>
+
+                    <a href="#ai-assistant" class="w-full sm:w-auto px-6 py-4 rounded-xl liquid-glass text-slate-300 hover:text-aero-emerald font-mono text-xs transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-aero-emerald"></i>
+                        <span>AI Advisor</span>
+                    </a>
+                </div>
+
+                <!-- Verified Track Record Ribbon -->
+                <div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+                    <div class="liquid-glass p-3.5 rounded-xl">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">Major Cohorts</div>
+                        <div class="text-xl font-tech font-bold text-aero-cyan mt-0.5">2 Completed</div>
+                        <div class="text-[10px] text-aero-emerald font-mono flex items-center gap-1 mt-0.5">
+                            <i class="fa-solid fa-check-double text-[8px]"></i> 100% Practical
+                        </div>
+                    </div>
+                    <div class="liquid-glass p-3.5 rounded-xl">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">Tech-Fest Wins</div>
+                        <div class="text-xl font-tech font-bold text-white mt-0.5">Champions</div>
+                        <div class="text-[10px] text-aero-amber font-mono mt-0.5">Amal Jyothi College</div>
+                    </div>
+                    <div class="liquid-glass p-3.5 rounded-xl">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">Core Disciplines</div>
+                        <div class="text-xl font-tech font-bold text-aero-cyan mt-0.5">4 Domains</div>
+                        <div class="text-[10px] text-slate-300 font-mono mt-0.5">UAV • IoT • Rob • 3D</div>
+                    </div>
+                    <div class="liquid-glass p-3.5 rounded-xl">
+                        <div class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">Prototypes Built</div>
+                        <div class="text-xl font-tech font-bold text-aero-emerald mt-0.5">50+ Projects</div>
+                        <div class="text-[10px] text-slate-400 font-mono mt-0.5">From Concept to CAD</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Hero Interactive Hardware Telemetry Box -->
+            <div class="lg:col-span-5">
+                <div class="liquid-glass p-6 sm:p-7 rounded-3xl border border-white/15 shadow-2xl relative">
+                    
+                    <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-3 h-3 rounded-full bg-aero-cyan animate-pulse"></span>
+                            <span class="font-tech font-bold text-xs text-white tracking-wider uppercase">FLIGHT TELEMETRY HUD</span>
+                        </div>
+                        <span class="text-[10px] font-mono text-aero-emerald bg-aero-emerald/10 px-2.5 py-1 rounded-full border border-aero-emerald/30 flex items-center gap-1.5">
+                            <i class="fa-solid fa-satellite text-[9px]"></i> 18 SATS (3D FIX)
+                        </span>
+                    </div>
+
+                    <!-- Telemetry Mode Selector -->
+                    <div class="grid grid-cols-3 gap-2 mb-5 font-mono text-[11px]">
+                        <button onclick="switchHeroHud('drone')" id="hud-btn-drone" class="p-2 rounded-xl bg-aero-cyan/20 border border-aero-cyan text-white text-center flex flex-col items-center gap-1 transition-all">
+                            <i class="fa-solid fa-plane-up text-aero-cyan"></i>
+                            <span>UAV DRONE</span>
+                        </button>
+                        <button onclick="switchHeroHud('iot')" id="hud-btn-iot" class="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white text-center flex flex-col items-center gap-1 transition-all">
+                            <i class="fa-solid fa-wifi text-aero-emerald"></i>
+                            <span>IOT MESH</span>
+                        </button>
+                        <button onclick="switchHeroHud('rd')" id="hud-btn-rd" class="p-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white text-center flex flex-col items-center gap-1 transition-all">
+                            <i class="fa-solid fa-cube text-aero-amber"></i>
+                            <span>3D / R&D</span>
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Visual Display Widget -->
+                    <div id="hud-dynamic-view" class="bg-[#04060c] rounded-2xl p-5 border border-white/10 space-y-4 font-mono text-xs">
+                        <div class="flex items-center justify-between text-slate-400 text-[11px]">
+                            <span>FC: <strong class="text-aero-cyan">Betaflight F4 / PX4</strong></span>
+                            <span>TX/RX: <strong class="text-aero-emerald">ELRS 2.4GHz</strong></span>
+                        </div>
+
+                        <!-- Attitude Indicator -->
+                        <div class="h-28 rounded-xl bg-gradient-to-b from-[#081224] to-[#040710] border border-aero-cyan/30 relative flex items-center justify-center overflow-hidden">
+                            <div class="w-20 h-20 rounded-full border border-aero-cyan/40 flex items-center justify-center relative">
+                                <div class="w-2 h-2 rounded-full bg-aero-cyan shadow-[0_0_8px_#00f0ff]"></div>
+                                <div class="absolute w-28 h-[1px] bg-aero-cyan/60"></div>
+                                <div class="absolute h-28 w-[1px] bg-aero-cyan/60"></div>
+                            </div>
+                            <div class="absolute bottom-2 left-3 text-[10px] text-slate-400">PITCH: <span class="text-aero-cyan">+1.4°</span></div>
+                            <div class="absolute bottom-2 right-3 text-[10px] text-slate-400">ROLL: <span class="text-aero-cyan">-0.2°</span></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                                <div class="text-[10px] text-slate-400">ESC 4x MOTORS</div>
+                                <div class="text-sm font-bold text-white mt-0.5">14,200 RPM</div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                                    <div class="bg-aero-cyan h-full w-[65%] rounded-full shadow-[0_0_6px_#00f0ff]"></div>
+                                </div>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                                <div class="text-[10px] text-slate-400">BATTERY (4S LiPo)</div>
+                                <div class="text-sm font-bold text-aero-emerald mt-0.5">15.8 V (84%)</div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                                    <div class="bg-aero-emerald h-full w-[84%] rounded-full shadow-[0_0_6px_#00e699]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                        <span>Active Protocol: <strong class="text-slate-200">DShot600 Telemetry</strong></span>
+                        <span class="text-aero-cyan">Ping: 14ms</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Marquee Ticker -->
+    <div class="py-3.5 border-y border-white/10 bg-[#060a14]/90 overflow-hidden relative z-10">
+        <div class="flex items-center gap-12 whitespace-nowrap animate-marquee text-xs font-mono tracking-widest text-slate-400 uppercase">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-trophy text-aero-amber"></i> AMAL JYOTHI TECH-FEST CHAMPIONS</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-plane-up text-aero-cyan"></i> AUTONOMOUS DRONES & FLIGHT CONTROLLER CALIBRATION</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-wifi text-aero-emerald"></i> ESP32 INDUSTRIAL IOT MESH NETWORKS</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-robot text-purple-400"></i> MECHATRONICS ROBOTICS & PID LOOPS</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-cube text-aero-amber"></i> FDM/SLA 3D CAD PROTOTYPING</span>
+            <span class="text-slate-600">•</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-aero-cyan"></i> K-12 & COLLEGE CURRICULUM ACCREDITATION</span>
+            <span class="text-slate-600">•</span>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- REAL BROMATRIX PHOTO & MEDIA ARCHIVE (FROM USER'S DRIVE LINKS) -->
+    <!-- ============================================================== -->
+    <section id="gallery" class="py-28 px-4 sm:px-8 relative z-10 max-w-7xl mx-auto border-t border-white/10">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14 space-y-4 reveal">
+            <span class="text-xs font-mono tracking-widest text-aero-cyan uppercase bg-aero-cyan/10 px-4 py-1.5 rounded-full border border-aero-cyan/30">
+                OFFICIAL FIELD OPS & MEDIA ARCHIVE
+            </span>
+            <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                Innovation In Action
+            </h2>
+            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+                Authentic moments from our competition victories, flagship internship cohorts, hardware lab sessions, and drone flight demonstrations.
+            </p>
+
+            <!-- Drive Quick Links Ribbon -->
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <a href="https://drive.google.com/drive/folders/16S5w0Tn2pf8F_u-TvIIey6QOnPk64Pmq?usp=drive_link" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-aero-cyan/20 border border-white/10 hover:border-aero-cyan text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-aero-amber"></i>
+                    <span>Tech-Fest AJEC Folder</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-500"></i>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1ZcMlseuAXcG-FlXc5KOSV39KUfVHkKe-?usp=drive_link" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-aero-emerald/20 border border-white/10 hover:border-aero-emerald text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-aero-emerald"></i>
+                    <span>Summer Internship 2026</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-500"></i>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1T5zt4pDi-HMzSma8rWpqazZNDU3xAA4A?usp=drive_link" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-purple-400 text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-folder-open text-purple-400"></i>
+                    <span>Internship 2.0 (10 Days)</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-500"></i>
+                </a>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap items-center justify-center gap-2 pt-4" id="gallery-filters">
+                <button onclick="filterGallery('all', this)" class="gallery-btn active px-4 py-2 rounded-xl bg-aero-cyan text-black font-tech font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                    All Photos
+                </button>
+                <button onclick="filterGallery('techfest', this)" class="gallery-btn px-4 py-2 rounded-xl liquid-glass border border-white/10 text-slate-300 hover:text-white font-tech text-xs uppercase tracking-wider transition-all">
+                    🏆 Tech-Fest Wins
+                </button>
+                <button onclick="filterGallery('summer', this)" class="gallery-btn px-4 py-2 rounded-xl liquid-glass border border-white/10 text-slate-300 hover:text-white font-tech text-xs uppercase tracking-wider transition-all">
+                    🎓 Summer Internship 2026
+                </button>
+                <button onclick="filterGallery('cohort2', this)" class="gallery-btn px-4 py-2 rounded-xl liquid-glass border border-white/10 text-slate-300 hover:text-white font-tech text-xs uppercase tracking-wider transition-all">
+                    ⚙️ Internship 2.0 Labs
+                </button>
+            </div>
+        </div>
+
+        <!-- Real Photo Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="gallery-grid">
+            
+            <!-- Real Photo 1: Tech-Fest First Official Win -->
+            <div class="gallery-item techfest liquid-glass rounded-2xl overflow-hidden reveal group" data-category="techfest">
+                <div class="aspect-[16/10] bg-slate-900 relative overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/d/1LvblMr4GV-c4SjurHbkZ2u2e_LWXZgII=w1000" alt="Tech-Fest AJEC Victory 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-transparent opacity-80"></div>
+                    <span class="absolute top-3 left-3 text-[10px] font-mono bg-aero-amber text-black font-bold px-2.5 py-1 rounded-full uppercase">
+                        Official Championship Win
+                    </span>
+                </div>
+                <div class="p-5 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-aero-cyan">Amal Jyothi College of Engineering</span>
+                        <span class="text-slate-400">Tech-Fest</span>
+                    </div>
+                    <h3 class="font-tech font-bold text-white text-base leading-snug">First Official Championship Trophy as BROMATRIX</h3>
+                    <p class="text-xs text-slate-400 line-clamp-2">The team celebrating the inaugural first-place championship win in autonomous hardware and robotics.</p>
+                    <button onclick="openLightbox(0)" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-aero-cyan/20 border border-white/10 hover:border-aero-cyan text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-expand text-aero-cyan"></i> Inspect High-Res Photo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Real Photo 2: Tech-Fest Trophy Award Presentation -->
+            <div class="gallery-item techfest liquid-glass rounded-2xl overflow-hidden reveal group" data-category="techfest" style="transition-delay: 100ms;">
+                <div class="aspect-[16/10] bg-slate-900 relative overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/d/1_s_01SvwCMGeOz7v0y-DUEFBBJyhxtML=w1000" alt="Tech-Fest Trophy Award Ceremony" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-transparent opacity-80"></div>
+                    <span class="absolute top-3 left-3 text-[10px] font-mono bg-aero-amber text-black font-bold px-2.5 py-1 rounded-full uppercase">
+                        Award Ceremony
+                    </span>
+                </div>
+                <div class="p-5 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-aero-cyan">State Level Competition</span>
+                        <span class="text-slate-400">Podium 01</span>
+                    </div>
+                    <h3 class="font-tech font-bold text-white text-base leading-snug">Trophy & Accolade Presentation Ceremony</h3>
+                    <p class="text-xs text-slate-400 line-clamp-2">Receiving highest honors for exceptional custom UAV flight mechanics and embedded innovation.</p>
+                    <button onclick="openLightbox(1)" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-aero-cyan/20 border border-white/10 hover:border-aero-cyan text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-expand text-aero-cyan"></i> Inspect High-Res Photo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Real Photo 3: Summer Internship 2026 Inauguration -->
+            <div class="gallery-item summer liquid-glass rounded-2xl overflow-hidden reveal group" data-category="summer" style="transition-delay: 150ms;">
+                <div class="aspect-[16/10] bg-slate-900 relative overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/d/18cL5oMkGPYabHiEYLrp7rOwSvwhbgfGW=w1000" alt="Summer Internship Inauguration" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-transparent opacity-80"></div>
+                    <span class="absolute top-3 left-3 text-[10px] font-mono bg-aero-emerald text-black font-bold px-2.5 py-1 rounded-full uppercase">
+                        Internship 2026
+                    </span>
+                </div>
+                <div class="p-5 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-aero-emerald">Two-Week Intensive</span>
+                        <span class="text-slate-400">Inauguration</span>
+                    </div>
+                    <h3 class="font-tech font-bold text-white text-base leading-snug">Two-Week Summer Internship Inauguration</h3>
+                    <p class="text-xs text-slate-400 line-clamp-2">Official ceremony launching the comprehensive IoT, Robotics, Drone Technology & 3D Prototyping program.</p>
+                    <button onclick="openLightbox(2)" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-aero-cyan/20 border border-white/10 hover:border-aero-cyan text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-expand text-aero-cyan"></i> Inspect High-Res Photo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Real Photo 4: Summer Internship Session Hands-on -->
+            <div class="gallery-item summer liquid-glass rounded-2xl overflow-hidden reveal group" data-category="summer" style="transition-delay: 200ms;">
+                <div class="aspect-[16/10] bg-slate-900 relative overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/d/13n1pzm8dnv4nd8fqIzQYcCqt63hIxYhn=w1000" alt="Summer Internship 2026 Cohort Class" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-transparent opacity-80"></div>
+                    <span class="absolute top-3 left-3 text-[10px] font-mono bg-aero-emerald text-black font-bold px-2.5 py-1 rounded-full uppercase">
+                        Hands-on Training
+                    </span>
+                </div>
+                <div class="p-5 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-aero-emerald">Hardware Lab</span>
+                        <span class="text-slate-400">Live Mentorship</span>
+                    </div>
+                    <h3 class="font-tech font-bold text-white text-base leading-snug">Engineering Cohort in Practical Session</h3>
+                    <p class="text-xs text-slate-400 line-clamp-2">Passionate engineering students actively working through embedded C code and sensor circuit schematics.</p>
+                    <button onclick="openLightbox(3)" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-aero-cyan/20 border border-white/10 hover:border-aero-cyan text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-expand text-aero-cyan"></i> Inspect High-Res Photo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Real Photo 5: Internship 2.0 Circuit Assembly & Coding -->
+            <div class="gallery-item cohort2 liquid-glass rounded-2xl overflow-hidden reveal group" data-category="cohort2" style="transition-delay: 250ms;">
+                <div class="aspect-[16/10] bg-slate-900 relative overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/d/1NFY6aMm3ysGiNAQFAST6aN2VzjT5dqSl=w1000" alt="Internship 2.0 Breadboard Assembly" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-transparent opacity-80"></div>
+                    <span class="absolute top-3 left-3 text-[10px] font-mono bg-purple-500 text-white font-bold px-2.5 py-1 rounded-full uppercase">
+                        Internship 2.0 Lab
+                    </span>
+                </div>
+                <div class="p-5 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-purple-400">Day 1 Practical</span>
+                        <span class="text-slate-400">Circuit Wiring</span>
+                    </div>
+                    <h3 class="font-tech font-bold text-white text-base leading-snug">Embedded MCU & Sensor Wiring Lab</h3>
+                    <p class="text-xs text-slate-400 line-clamp-2">Students wiring hardware breadboards and deploying firmware with real-time serial debugging.</p>
+                    <button onclick="openLightbox(4)" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-aero-cyan/20 border border-white/10 hover:border-aero-cyan text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-expand text-aero-cyan"></i> Inspect High-Res Photo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Real Photo 6: Tech-Fest Hardware Showcase & Drone Demonstration -->
+            <div class="gallery-item techfest liquid-glass rounded-2xl overflow-hidden reveal group" data-category="techfest" style="transition-delay: 300ms;">
+                <div class="aspect-[16/10] bg-slate-900 relative overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/d/1TqfPvWOl5UlKmsj3iscYnki5sNk7sa7w=w1000" alt="Tech-Fest Drone Showcase" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#05070d] via-transparent to-transparent opacity-80"></div>
+                    <span class="absolute top-3 left-3 text-[10px] font-mono bg-aero-amber text-black font-bold px-2.5 py-1 rounded-full uppercase">
+                        Competition Arena
+                    </span>
+                </div>
+                <div class="p-5 space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-aero-cyan">Hardware Arena</span>
+                        <span class="text-slate-400">Live Exhibition</span>
+                    </div>
+                    <h3 class="font-tech font-bold text-white text-base leading-snug">Autonomous Drone & Rover Field Arena</h3>
+                    <p class="text-xs text-slate-400 line-clamp-2">Showcasing custom airframe prototypes and autonomous obstacle navigation algorithms to judges.</p>
+                    <button onclick="openLightbox(5)" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-aero-cyan/20 border border-white/10 hover:border-aero-cyan text-slate-300 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-expand text-aero-cyan"></i> Inspect High-Res Photo
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Core Technical Domains -->
+    <section id="trainings" class="py-24 px-4 sm:px-8 relative z-10 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4 reveal">
+            <span class="text-xs font-mono tracking-widest text-aero-cyan uppercase bg-aero-cyan/10 px-4 py-1.5 rounded-full border border-aero-cyan/30">
+                PRACTICAL MASTERY PILLARS
+            </span>
+            <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                Specialized Technical Domains
+            </h2>
+            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+                Industrial hardware training developed with hands-on lab benches, production codebases, and real aerospace flight parameters.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Pillar 1: Aerial UAVs -->
+            <div class="liquid-glass p-8 rounded-3xl flex flex-col justify-between reveal group">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-aero-cyan/15 border border-aero-cyan/30 flex items-center justify-center text-aero-cyan text-2xl mb-6 shadow-[0_0_15px_rgba(0,240,255,0.25)]">
+                        <i class="fa-solid fa-plane-up"></i>
+                    </div>
+                    <span class="text-xs font-mono text-aero-cyan uppercase">Pillar 01 // Flight</span>
+                    <h3 class="font-tech font-bold text-xl text-white mt-1 mb-3 group-hover:text-aero-cyan transition-colors">Aerial Drones & UAVs</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Quadcopter airframe dynamics, Betaflight/PX4 PID tuning, telemetry RF links, electronic speed controllers, and GPS waypoint mission planning.
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 font-mono text-xs text-aero-cyan flex items-center justify-between">
+                    <span>Flight Mechanics</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- Pillar 2: IoT & Embedded -->
+            <div class="liquid-glass p-8 rounded-3xl flex flex-col justify-between reveal group" style="transition-delay: 100ms;">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-aero-emerald/15 border border-aero-emerald/30 flex items-center justify-center text-aero-emerald text-2xl mb-6 shadow-[0_0_15px_rgba(0,230,153,0.25)]">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <span class="text-xs font-mono text-aero-emerald uppercase">Pillar 02 // Embedded</span>
+                    <h3 class="font-tech font-bold text-xl text-white mt-1 mb-3 group-hover:text-aero-emerald transition-colors">IoT & Embedded Firmware</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        ESP32-S3 and STM32 microcontrollers, FreeRTOS multitasking, ADC sampling, sensor arrays, and MQTT cloud telemetry dashboards.
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 font-mono text-xs text-aero-emerald flex items-center justify-between">
+                    <span>C/C++ & FreeRTOS</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- Pillar 3: Autonomous Robotics -->
+            <div class="liquid-glass p-8 rounded-3xl flex flex-col justify-between reveal group" style="transition-delay: 150ms;">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl mb-6 shadow-[0_0_15px_rgba(121,40,202,0.25)]">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <span class="text-xs font-mono text-purple-400 uppercase">Pillar 03 // Mechatronics</span>
+                    <h3 class="font-tech font-bold text-xl text-white mt-1 mb-3 group-hover:text-purple-300 transition-colors">Autonomous Robotics</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Kinematics, omni-directional drive chassis, motor driver H-bridges, ultrasonic obstacle avoidance, and PID closed-loop feedback.
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 font-mono text-xs text-purple-400 flex items-center justify-between">
+                    <span>Motor Control Loops</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- Pillar 4: 3D CAD & Prototyping -->
+            <div class="liquid-glass p-8 rounded-3xl flex flex-col justify-between reveal group" style="transition-delay: 200ms;">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-aero-amber/15 border border-aero-amber/30 flex items-center justify-center text-aero-amber text-2xl mb-6 shadow-[0_0_15px_rgba(255,159,28,0.25)]">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <span class="text-xs font-mono text-aero-amber uppercase">Pillar 04 // CAD</span>
+                    <h3 class="font-tech font-bold text-xl text-white mt-1 mb-3 group-hover:text-aero-amber transition-colors">3D Design & Printing</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Autodesk Fusion 360 parametric CAD modeling, slicing optimization, FDM/SLA structural printing, and enclosure prototyping.
+                    </p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 font-mono text-xs text-aero-amber flex items-center justify-between">
+                    <span>Rapid Prototyping</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Custom Projects R&D and Internship Highlights -->
+    <section id="rd-support" class="py-20 px-4 sm:px-8 relative z-10 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            
+            <!-- Left Card: Custom R&D Projects -->
+            <div class="liquid-glass p-8 sm:p-10 rounded-3xl border border-white/15 space-y-6 flex flex-col justify-between reveal">
+                <div class="space-y-5">
+                    <div class="w-12 h-12 rounded-xl bg-aero-cyan/20 border border-aero-cyan/40 flex items-center justify-center text-aero-cyan text-xl">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-mono text-aero-cyan uppercase tracking-wider">ENGINEERING EXCELLENCE</span>
+                        <h3 class="font-display text-3xl font-bold text-white mt-1">Custom Hardware R&D & Prototyping</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Have an innovative idea for an agricultural drone payload, custom industrial sensor, or need execution for capstone hardware? We provide end-to-end engineering—including schematics, 4-layer PCB design, low-level firmware, and 3D CAD frames.
+                    </p>
+                    <ul class="space-y-2.5 text-xs font-mono text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aero-cyan"></i> Custom Multi-Layer High-Speed PCB Layouts</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aero-cyan"></i> Embedded C/C++ Firmware & Protocol Stacks</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aero-cyan"></i> Carbon Fiber & 3D Printed Mechanical Housings</li>
+                    </ul>
+                </div>
+                <button onclick="openModal('rd')" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-aero-cyan text-black font-tech font-bold text-xs uppercase tracking-wider hover:bg-white transition-all shadow-[0_0_20px_rgba(0,240,255,0.35)] flex items-center justify-center gap-2">
+                    <span>Request R&D Consultation</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Right Card: Internship Accomplishments -->
+            <div id="internships" class="liquid-glass p-8 sm:p-10 rounded-3xl border border-white/15 space-y-6 flex flex-col justify-between reveal" style="transition-delay: 150ms;">
+                <div class="space-y-5">
+                    <div class="w-12 h-12 rounded-xl bg-aero-amber/20 border border-aero-amber/40 flex items-center justify-center text-aero-amber text-xl">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-mono text-aero-amber uppercase tracking-wider">PROVEN TRACK RECORD</span>
+                        <h3 class="font-display text-3xl font-bold text-white mt-1">Flagship Internship Programs</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Bromatrix has successfully conducted two flagship intensive internship cohorts, equipping students with real-world engineering problem solving in UAV flight mechanics, robotics, and connected hardware.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 font-mono">
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div class="text-xl font-bold text-aero-amber font-tech">Cohort I & II</div>
+                            <div class="text-xs text-slate-400 mt-1">100% Practical Kits</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div class="text-xl font-bold text-aero-emerald font-tech">State Award</div>
+                            <div class="text-xs text-slate-400 mt-1">Tech-Fest Champions</div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="openModal('internship')" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-aero-amber text-black font-tech font-bold text-xs uppercase tracking-wider hover:bg-white transition-all shadow-[0_0_20px_rgba(255,159,28,0.35)] flex items-center justify-center gap-2">
+                    <span>Enquire For Upcoming Cohort</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Hardware System Topology Visualizer -->
+    <section id="architecture" class="py-24 px-4 sm:px-8 relative z-10 max-w-7xl mx-auto">
+        <div class="liquid-glass rounded-3xl p-6 sm:p-10 border border-white/15 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-xs font-mono tracking-widest text-aero-cyan uppercase bg-aero-cyan/10 px-3.5 py-1.5 rounded-full border border-aero-cyan/30">
+                        HARDWARE SYSTEM BLUEPRINTS
+                    </span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">
+                        Explore Hardware Flow Signals
+                    </h2>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Inspect how sensors sample analog values, firmware processes control loops, and wireless protocols push live telemetry.
+                    </p>
+
+                    <div class="space-y-3 pt-2">
+                        <button onclick="switchArch('iot')" id="tab-iot" class="arch-tab w-full text-left p-4 rounded-xl liquid-glass border border-aero-cyan text-white flex items-center justify-between transition-all">
+                            <div class="flex items-center gap-3.5">
+                                <i class="fa-solid fa-wifi text-aero-cyan text-base"></i>
+                                <div>
+                                    <div class="font-tech font-bold text-xs">Smart IoT Telemetry Architecture</div>
+                                    <div class="text-[11px] text-slate-400 font-mono">ESP32 Telemetry to MQTT Cloud Broker</div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-aero-cyan"></i>
+                        </button>
+
+                        <button onclick="switchArch('drone')" id="tab-drone" class="arch-tab w-full text-left p-4 rounded-xl liquid-glass border border-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all">
+                            <div class="flex items-center gap-3.5">
+                                <i class="fa-solid fa-plane-up text-aero-amber text-base"></i>
+                                <div>
+                                    <div class="font-tech font-bold text-xs">Quadcopter UAV Flight Stack</div>
+                                    <div class="text-[11px] text-slate-400 font-mono">Flight Controller PID, RF Link, ESC Drives</div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+
+                        <button onclick="switchArch('rd')" id="tab-rd" class="arch-tab w-full text-left p-4 rounded-xl liquid-glass border border-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all">
+                            <div class="flex items-center gap-3.5">
+                                <i class="fa-solid fa-cube text-purple-400 text-base"></i>
+                                <div>
+                                    <div class="font-tech font-bold text-xs">R&D Rapid Prototyping Pipeline</div>
+                                    <div class="text-[11px] text-slate-400 font-mono">3D CAD, PCB Etch, Assembly & Validation</div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="bg-[#030610] rounded-2xl border border-white/10 p-6 font-mono text-xs shadow-2xl">
+                        <div class="flex items-center justify-between pb-4 mb-6 border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-aero-emerald"></span>
+                                <span class="text-slate-400 text-[11px] ml-2">bromatrix-hardware-stream --live</span>
+                            </div>
+                            <span class="text-aero-emerald font-bold flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-aero-emerald animate-ping"></span> SIGNAL ACTIVE
+                            </span>
+                        </div>
+
+                        <div id="arch-diagram-container" class="min-h-[260px] flex flex-col justify-center gap-3.5">
+                            <!-- JS populated -->
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-slate-400 text-[11px]">
+                            <span id="arch-metric-left">Primary Controller: <strong class="text-aero-cyan">ESP32 Dual-Core 240MHz</strong></span>
+                            <span id="arch-metric-right">Hardware Kit: <strong class="text-aero-emerald">100% Practical</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Systems Advisor Section -->
+    <section id="ai-assistant" class="py-24 px-4 sm:px-8 relative z-10 max-w-5xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-12 space-y-4 reveal">
+            <span class="text-xs font-mono tracking-widest text-aero-cyan uppercase bg-aero-cyan/10 px-4 py-1.5 rounded-full border border-aero-cyan/30">
+                AI SYLLABUS & HARDWARE BLUEPRINT ENGINE
+            </span>
+            <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                Bromatrix AI STEM Advisor
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                Generate customized workshop syllabi, hardware bill of materials, or college curriculum plans instantly.
+            </p>
+        </div>
+
+        <div class="liquid-glass p-6 sm:p-8 rounded-3xl border border-white/15 shadow-2xl relative reveal">
+            <div class="space-y-4">
+                <label for="ai-prompt" class="block text-xs font-mono text-aero-cyan uppercase tracking-wider">
+                    Enter Your Workshop, Syllabus, or Project Requirement:
+                </label>
+                <div class="relative">
+                    <textarea id="ai-prompt" rows="3" class="w-full bg-[#030610] rounded-2xl border border-white/15 p-4 text-sm text-slate-200 focus:outline-none focus:border-aero-cyan transition-all resize-none placeholder-slate-500 font-sans" placeholder="e.g., Generate a 3-day Autonomous Drone Flight & PID Tuning Workshop syllabus for college engineering students..."></textarea>
+                    
+                    <button id="ai-submit-btn" onclick="generateAIArchitecture()" class="absolute bottom-3 right-3 px-5 py-2.5 rounded-xl bg-aero-cyan text-black font-tech font-bold text-xs uppercase tracking-wider hover:bg-white transition-all flex items-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                        <span>Generate Plan</span>
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
+                    <span class="text-slate-500 font-mono text-[11px]">Quick Samples:</span>
+                    <button onclick="setSamplePrompt('Outline a 5-day IoT & ESP32 Smart Agriculture workshop for college students with cloud dashboards')" class="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[11px] font-mono">
+                        College IoT Workshop
+                    </button>
+                    <button onclick="setSamplePrompt('Suggest a beginner-friendly 3D Printing and Robotics curriculum for K-12 school students')" class="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[11px] font-mono">
+                        School Robotics Syllabus
+                    </button>
+                    <button onclick="setSamplePrompt('List essential components and sensors required for an Obstacle Avoiding Autonomous Drone')" class="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-[11px] font-mono">
+                        Drone Hardware BOM
+                    </button>
+                </div>
+            </div>
+
+            <div id="ai-response-box" class="mt-8 hidden p-6 rounded-2xl bg-[#030610] border border-aero-cyan/40 text-sm font-sans space-y-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div class="flex items-center gap-2 text-aero-cyan font-tech text-xs font-bold">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>BROMATRIX AI SYLLABUS RECOMMENDATION</span>
+                    </div>
+                    <span class="text-[10px] font-mono text-aero-emerald">Active Engine</span>
+                </div>
+                <div id="ai-response-content" class="text-slate-300 leading-relaxed space-y-3 text-sm">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope & Training Estimator Tool -->
+    <section id="estimator" class="py-24 px-4 sm:px-8 relative z-10 max-w-6xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4 reveal">
+            <span class="text-xs font-mono tracking-widest text-aero-cyan uppercase bg-aero-cyan/10 px-4 py-1.5 rounded-full border border-aero-cyan/30">
+                PROGRAM SCOPE & TIMELINE CALCULATOR
+            </span>
+            <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                Workshop & R&D Estimator
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                Configure your training requirements or hardware project scope to receive an instant timeline and estimated plan.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 liquid-glass p-6 sm:p-10 rounded-3xl border border-white/15 reveal">
+            <div class="lg:col-span-7 space-y-8">
+                <div class="space-y-3">
+                    <label class="block text-xs font-mono text-slate-300 uppercase tracking-wider">1. Select Program / Service Type</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="calc-type-group">
+                        <button type="button" onclick="updateCalc('type', 'school', this)" class="calc-type-btn active p-3 rounded-xl bg-aero-cyan/20 border border-aero-cyan text-white text-xs font-tech font-bold text-center transition-all">
+                            College Workshop
+                        </button>
+                        <button type="button" onclick="updateCalc('type', 'rd', this)" class="calc-type-btn p-3 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white text-xs font-tech font-medium text-center transition-all">
+                            Custom Project R&D
+                        </button>
+                        <button type="button" onclick="updateCalc('type', 'curriculum', this)" class="calc-type-btn p-3 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white text-xs font-tech font-medium text-center transition-all">
+                            Lab & Syllabus Setup
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-slate-300 uppercase tracking-wider">2. Student Batch Size / Project Scope</span>
+                        <span id="concurrency-label" class="text-aero-cyan font-bold">50 Students</span>
+                    </div>
+                    <input type="range" id="concurrency-range" min="1" max="4" step="1" value="2" oninput="updateCalcRange(this.value)" class="w-full accent-aero-cyan cursor-pointer">
+                    <div class="flex justify-between text-[10px] font-mono text-slate-500">
+                        <span>25 Batch</span>
+                        <span>50 Batch</span>
+                        <span>150 Batch</span>
+                        <span>300+ Batch</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-xs font-mono text-slate-300 uppercase tracking-wider">3. Add-on Modules & Hardware Kits</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3 cursor-pointer hover:border-aero-cyan/40 text-xs text-slate-300 transition-all">
+                            <input type="checkbox" onchange="toggleAddon('kits', this.checked)" class="rounded accent-aero-cyan">
+                            <span>Take-Home Hardware Kits</span>
+                        </label>
+                        <label class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3 cursor-pointer hover:border-aero-cyan/40 text-xs text-slate-300 transition-all">
+                            <input type="checkbox" onchange="toggleAddon('drone', this.checked)" class="rounded accent-aero-cyan">
+                            <span>UAV Flight Arena Setup</span>
+                        </label>
+                        <label class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3 cursor-pointer hover:border-aero-cyan/40 text-xs text-slate-300 transition-all">
+                            <input type="checkbox" onchange="toggleAddon('3d', this.checked)" class="rounded accent-aero-cyan">
+                            <span>3D Printing Filament & CAD Lab</span>
+                        </label>
+                        <label class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3 cursor-pointer hover:border-aero-cyan/40 text-xs text-slate-300 transition-all">
+                            <input type="checkbox" onchange="toggleAddon('cert', this.checked)" class="rounded accent-aero-cyan">
+                            <span>Bromatrix Industry Certification</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 bg-[#030610] rounded-2xl p-6 sm:p-8 border border-white/10 flex flex-col justify-between shadow-2xl">
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                        <span class="text-xs font-tech text-aero-cyan uppercase tracking-wider font-bold">ESTIMATED SUMMARY</span>
+                        <span class="w-2 h-2 rounded-full bg-aero-emerald animate-ping"></span>
+                    </div>
+
+                    <div>
+                        <div class="text-xs text-slate-400 font-mono">Suggested Duration</div>
+                        <div id="est-time" class="text-2xl font-tech font-bold text-white mt-1">2 - 3 Days</div>
+                    </div>
+
+                    <div>
+                        <div class="text-xs text-slate-400 font-mono">Delivery Methodology</div>
+                        <div id="est-cost" class="text-2xl font-extrabold font-tech text-aero-cyan mt-1">Hands-On Practical Lab</div>
+                        <p class="text-xs text-slate-400 mt-2 leading-relaxed font-sans">
+                            Includes hardware testing kits, experienced trainer mentors, component access, and post-training project mentorship.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-white/10 mt-6">
+                    <button onclick="openModalWithEstimate()" class="w-full py-4 rounded-xl bg-gradient-to-r from-aero-cyan to-aero-emerald text-black font-tech font-bold text-xs tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(0,240,255,0.4)] flex items-center justify-center gap-2">
+                        <span>Lock In Dates & Book Program</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-4 sm:px-8 relative z-10 border-t border-white/10 bg-[#04060c]">
+        <div class="max-w-7xl mx-auto space-y-16">
+            <div class="liquid-glass p-8 sm:p-14 rounded-3xl border border-white/15 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left reveal">
+                <div class="space-y-3 max-w-xl">
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold text-white">Bring Bromatrix to Your Institution</h2>
+                    <p class="text-slate-400 text-sm">Schedule a direct strategy consultation with our engineers to discuss workshops, lab setups, or custom hardware R&D.</p>
+                </div>
+                <button onclick="openModal('general')" class="px-8 py-4 rounded-xl bg-white text-black font-tech font-bold text-xs uppercase tracking-wider hover:bg-aero-cyan transition-all shadow-xl shrink-0 flex items-center gap-2">
+                    <span>Contact Bromatrix Team</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 text-sm text-slate-400">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-aero-cyan flex items-center justify-center text-black font-bold">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <span class="font-tech font-bold text-white text-lg tracking-wider">BROMATRIX</span>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed font-sans">
+                        Pioneering practical innovation in IoT, Embedded Systems, Autonomous Robotics, 3D CAD, Aerial UAV Drones, and Custom R&D Hardware Prototyping.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="text-xs font-tech text-white uppercase tracking-wider font-bold">Core Domains</div>
+                    <ul class="space-y-2 text-xs font-mono">
+                        <li><a href="#trainings" class="hover:text-aero-cyan transition-colors">Aerial Drones & UAVs</a></li>
+                        <li><a href="#trainings" class="hover:text-aero-cyan transition-colors">IoT & Embedded Systems</a></li>
+                        <li><a href="#trainings" class="hover:text-aero-cyan transition-colors">Autonomous Robotics</a></li>
+                        <li><a href="#trainings" class="hover:text-aero-cyan transition-colors">3D Prototyping & CAD</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="text-xs font-tech text-white uppercase tracking-wider font-bold">Media & Portals</div>
+                    <ul class="space-y-2 text-xs font-mono">
+                        <li><a href="#gallery" class="hover:text-aero-cyan transition-colors">Field Photo Archive</a></li>
+                        <li><a href="#ai-assistant" class="hover:text-aero-cyan transition-colors">AI STEM Advisor</a></li>
+                        <li><a href="#estimator" class="hover:text-aero-cyan transition-colors">Program Calculator</a></li>
+                        <li><a href="#architecture" class="hover:text-aero-cyan transition-colors">Hardware Flow Diagrams</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="text-xs font-tech text-white uppercase tracking-wider font-bold">Connect With Us</div>
+                    <div class="flex items-center gap-3 text-lg">
+                        <a href="https://drive.google.com/drive/folders/16S5w0Tn2pf8F_u-TvIIey6QOnPk64Pmq?usp=drive_link" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-xl liquid-glass flex items-center justify-center hover:text-aero-cyan transition-all" title="Tech-Fest Drive Folder"><i class="fa-brands fa-google-drive"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl liquid-glass flex items-center justify-center hover:text-aero-cyan transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl liquid-glass flex items-center justify-center hover:text-aero-cyan transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl liquid-glass flex items-center justify-center hover:text-aero-cyan transition-all"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                    <div class="text-[11px] font-mono text-slate-500 pt-1">
+                        Status: <span class="text-aero-emerald">Accepting Enquiries</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4 font-mono">
+                <div>&copy; 2026 Bromatrix Innovation Hub. All rights reserved.</div>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="hover:text-slate-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-400">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Lightbox Modal -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/90 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="liquid-glass max-w-4xl w-full p-6 sm:p-8 rounded-3xl border border-white/20 shadow-2xl relative transform scale-95 transition-transform duration-300" id="lightbox-box">
+            <button onclick="closeLightbox()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition-colors z-20">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-7 aspect-[4/3] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 relative">
+                    <img id="lightbox-img" src="" alt="Enlarged Archive Photo" class="w-full h-full object-cover">
+                </div>
+
+                <div class="md:col-span-5 space-y-4 font-mono">
+                    <span id="lightbox-tag" class="text-xs text-aero-cyan uppercase tracking-wider bg-aero-cyan/10 px-3 py-1 rounded-full border border-aero-cyan/30">CATEGORY</span>
+                    <h3 id="lightbox-title" class="font-tech text-xl font-bold text-white leading-snug">Archive Photo</h3>
+                    <p id="lightbox-desc" class="text-xs text-slate-300 leading-relaxed font-sans">Description will appear here.</p>
+                    
+                    <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1 text-[11px]">
+                        <div class="text-slate-400">Event Location: <span id="lightbox-loc" class="text-aero-emerald">Amal Jyothi College</span></div>
+                        <div class="text-slate-400">Source: <span id="lightbox-drive" class="text-aero-cyan">Bromatrix Drive</span></div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2">
+                        <button onclick="prevLightbox()" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-slate-300 hover:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chevron-left text-[10px]"></i> Previous
+                        </button>
+                        <span id="lightbox-counter" class="text-xs text-slate-500">1 / 6</span>
+                        <button onclick="nextLightbox()" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-slate-300 hover:text-white flex items-center gap-2">
+                            Next <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking & Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/90 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="liquid-glass max-w-xl w-full p-8 rounded-3xl border border-white/20 shadow-2xl relative transform scale-95 transition-transform duration-300" id="modal-box">
+            <button onclick="closeModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="space-y-6">
+                <div>
+                    <span class="text-xs font-mono text-aero-cyan uppercase tracking-wider" id="modal-category-tag">PROGRAM ENQUIRY</span>
+                    <h3 class="font-tech text-2xl font-bold text-white mt-1">Connect with Bromatrix</h3>
+                    <p class="text-xs text-slate-400 mt-1">Tell us about your institution, workshop dates, internship interest, or hardware project.</p>
+                </div>
+
+                <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 uppercase mb-1">Your Name / Institution / College</label>
+                        <input type="text" required class="w-full bg-[#030610] border border-white/15 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-aero-cyan transition-colors" placeholder="e.g. Prof. Rahul Sharma / Apex Institute of Tech">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase mb-1">Email Address</label>
+                            <input type="email" required class="w-full bg-[#030610] border border-white/15 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-aero-cyan transition-colors" placeholder="rahul@institution.edu">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase mb-1">Contact Phone</label>
+                            <input type="tel" required class="w-full bg-[#030610] border border-white/15 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-aero-cyan transition-colors" placeholder="+91 98765 43210">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 uppercase mb-1">Program or Project Requirement</label>
+                        <textarea id="modal-project-summary" rows="3" required class="w-full bg-[#030610] border border-white/15 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-aero-cyan transition-colors resize-none" placeholder="Details about training dates, student strength, or hardware R&D prototype needs..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-aero-cyan to-aero-emerald text-black font-tech font-bold text-xs tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                        Submit Transmission to Bromatrix
+                    </button>
+                </form>
+
+                <div id="modal-success" class="hidden p-4 rounded-xl bg-aero-emerald/15 border border-aero-emerald/40 text-aero-emerald text-xs font-mono text-center">
+                    <i class="fa-solid fa-circle-check text-base mb-1 block"></i>
+                    Signal transmitted successfully! Bromatrix team will contact you shortly.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive JavaScript Engine -->
+    <script>
+        /* ========================================================== */
+        /* 1. INTERACTIVE 3D CYBER TOPOGRAPHIC & HORIZON WAVE CANVAS  */
+        /* ========================================================== */
+        const cyberCanvas = document.getElementById('bg-cyber-canvas');
+        const cyberCtx = cyberCanvas ? cyberCanvas.getContext('2d') : null;
+        let canvasW = window.innerWidth;
+        let canvasH = window.innerHeight;
+        let canvasMouseX = canvasW * 0.5;
+        let canvasMouseY = canvasH * 0.5;
+        let canvasTargetMouseX = canvasW * 0.5;
+        let canvasTargetMouseY = canvasH * 0.5;
+        const cyberMotes = [];
+        const MOTE_COUNT = 40;
+
+        function initCyberCanvas() {
+            if (!cyberCanvas || !cyberCtx) return;
+            resizeCyberCanvas();
+            window.addEventListener('resize', resizeCyberCanvas);
+
+            cyberMotes.length = 0;
+            for (let i = 0; i < MOTE_COUNT; i++) {
+                cyberMotes.push({
+                    x: Math.random() * canvasW,
+                    y: Math.random() * canvasH,
+                    radius: Math.random() * 1.8 + 0.6,
+                    speedY: Math.random() * 0.4 + 0.15,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    alpha: Math.random() * 0.45 + 0.2,
+                    color: Math.random() > 0.4 ? '#00f0ff' : '#00e699'
+                });
+            }
+        }
+
+        function resizeCyberCanvas() {
+            if (!cyberCanvas) return;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvasW = window.innerWidth;
+            canvasH = window.innerHeight;
+            cyberCanvas.width = canvasW * dpr;
+            cyberCanvas.height = canvasH * dpr;
+            if (cyberCtx) {
+                if (cyberCtx.resetTransform) cyberCtx.resetTransform();
+                else cyberCtx.setTransform(1, 0, 0, 1, 0, 0);
+                cyberCtx.scale(dpr, dpr);
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            canvasTargetMouseX = e.clientX;
+            canvasTargetMouseY = e.clientY;
+        });
+
+        function renderCyberBackground(timeMs) {
+            if (!cyberCtx || !cyberCanvas || document.hidden) {
+                requestAnimationFrame(renderCyberBackground);
+                return;
+            }
+
+            const t = timeMs * 0.0015;
+            canvasMouseX += (canvasTargetMouseX - canvasMouseX) * 0.06;
+            canvasMouseY += (canvasTargetMouseY - canvasMouseY) * 0.06;
+
+            cyberCtx.clearRect(0, 0, canvasW, canvasH);
+
+            // 3D Topographic Mesh
+            const cols = 26;
+            const rows = 16;
+            const originY = canvasH * 0.38;
+            const planeHeight = canvasH * 0.72;
+            const planeWidth = canvasW * 1.35;
+
+            const grid = [];
+            for (let r = 0; r <= rows; r++) {
+                grid[r] = [];
+                const depthNorm = r / rows;
+                const perspective = Math.pow(depthNorm, 1.7);
+                const py = originY + perspective * planeHeight;
+                const rowWidth = planeWidth * (0.35 + 0.65 * depthNorm);
+                const rowStartX = canvasW * 0.5 - rowWidth * 0.5;
+
+                for (let c = 0; c <= cols; c++) {
+                    const colNorm = c / cols;
+                    const px = rowStartX + colNorm * rowWidth;
+
+                    // Multi-frequency wave calculation
+                    let wave = Math.sin(colNorm * 7 + t * 0.9) * Math.cos(depthNorm * 5 + t * 0.7) * 20 * depthNorm;
+                    wave += Math.sin(colNorm * 12 - t * 1.2) * 7 * depthNorm;
+
+                    // Mouse energy ripple
+                    const distMouse = Math.hypot(px - canvasMouseX, py - canvasMouseY);
+                    if (distMouse < 200) {
+                        const ripple = Math.cos((distMouse / 200) * Math.PI * 0.5);
+                        wave -= ripple * 28 * depthNorm;
+                    }
+
+                    // Drone downward ion flux
+                    const distDrone = Math.hypot(px - (droneCurrentX + 96), py - (droneCurrentY + 72));
+                    if (distDrone < 190) {
+                        const flux = Math.cos((distDrone / 190) * Math.PI * 0.5);
+                        wave += flux * 26 * depthNorm;
+                    }
+
+                    grid[r][c] = { x: px, y: py + wave, depthNorm, distDrone };
+                }
+            }
+
+            // Draw elevation contour lines
+            for (let r = 0; r <= rows; r++) {
+                const depth = r / rows;
+                const alpha = 0.07 + depth * 0.22;
+                cyberCtx.beginPath();
+                cyberCtx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+                cyberCtx.lineWidth = 0.8 + depth * 0.7;
+
+                for (let c = 0; c <= cols; c++) {
+                    const pt = grid[r][c];
+                    if (c === 0) cyberCtx.moveTo(pt.x, pt.y);
+                    else cyberCtx.lineTo(pt.x, pt.y);
+                }
+                cyberCtx.stroke();
+            }
+
+            // Draw perspective longitude rays
+            for (let c = 0; c <= cols; c += 2) {
+                cyberCtx.beginPath();
+                cyberCtx.strokeStyle = 'rgba(0, 230, 153, 0.12)';
+                cyberCtx.lineWidth = 0.75;
+
+                for (let r = 0; r <= rows; r++) {
+                    const pt = grid[r][c];
+                    if (r === 0) cyberCtx.moveTo(pt.x, pt.y);
+                    else cyberCtx.lineTo(pt.x, pt.y);
+                }
+                cyberCtx.stroke();
+            }
+
+            // Glowing peak nodes under drone
+            for (let r = 1; r <= rows; r += 2) {
+                for (let c = 1; c <= cols; c += 2) {
+                    const pt = grid[r][c];
+                    if (pt.distDrone < 150) {
+                        const intensity = 1 - (pt.distDrone / 150);
+                        cyberCtx.fillStyle = `rgba(0, 240, 255, ${intensity * 0.85})`;
+                        cyberCtx.beginPath();
+                        cyberCtx.arc(pt.x, pt.y, 1.8 + intensity * 2.2, 0, Math.PI * 2);
+                        cyberCtx.fill();
+                    }
+                }
+            }
+
+            // Render floating cyber motes
+            for (let i = 0; i < cyberMotes.length; i++) {
+                const m = cyberMotes[i];
+                m.y -= m.speedY;
+                m.x += m.speedX;
+                if (m.y < 0) {
+                    m.y = canvasH + 10;
+                    m.x = Math.random() * canvasW;
+                }
+                if (m.x < 0) m.x = canvasW;
+                if (m.x > canvasW) m.x = 0;
+
+                cyberCtx.fillStyle = m.color;
+                cyberCtx.globalAlpha = m.alpha;
+                cyberCtx.beginPath();
+                cyberCtx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
+                cyberCtx.fill();
+            }
+            cyberCtx.globalAlpha = 1.0;
+
+            requestAnimationFrame(renderCyberBackground);
+        }
+        initCyberCanvas();
+        requestAnimationFrame(renderCyberBackground);
+
+        /* ========================================================== */
+        /* 2. FULLSCREEN FLYING DRONE WITH MULTI-PART ASSEMBLY ENGINE  */
+        /* ========================================================== */
+        const droneAnchor = document.getElementById('drone-position-anchor');
+        const droneCraft = document.getElementById('drone-craft');
+        const telemetryText = document.getElementById('drone-telemetry-text');
+        const droneStatusDot = document.getElementById('drone-status-dot');
+        const scrollBar = document.getElementById('scroll-progress');
+        const navbar = document.getElementById('navbar');
+        const assemblyFlash = document.getElementById('assembly-lock-flash');
+
+        // Dynamic coordinate state (moves freely across whole screen)
+        let droneCurrentX = Math.max(20, window.innerWidth - 300);
+        let droneTargetX = Math.max(20, window.innerWidth - 300);
+        let droneCurrentY = 135;
+        let droneTargetY = 135;
+        let droneTilt = 0;
+        let droneTargetTilt = 0;
+        let dronePitch = 0;
+        let lastScrollY = window.scrollY;
+        let isExploded = false;
+        let isAutopilot = false;
+        let autopilotAngle = 0;
+
+        // Waypoints across page sections for smooth full-screen patrol
+        function computeScrollWaypoint(percent) {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            
+            if (percent < 0.12) {
+                // Section 1: Hero Station (Top-Right)
+                return {
+                    x: Math.max(20, vw - 280),
+                    y: 130 + percent * 120,
+                    stage: "WAYPOINT: HERO DOCK"
+                };
+            } else if (percent < 0.32) {
+                // Section 2: Technical Domains (Swoops across to Left Margin)
+                const t = (percent - 0.12) / (0.32 - 0.12);
+                const startX = Math.max(20, vw - 280);
+                const targetX = Math.min(60, vw * 0.08);
+                const x = startX + (targetX - startX) * Math.sin(t * Math.PI * 0.5);
+                const y = 144 + (vh * 0.32 - 144) * t;
+                return { x, y, stage: "PATROL: DOMAIN BLUEPRINTS" };
+            } else if (percent < 0.54) {
+                // Section 3: Real Photo Archive (Sweeps across diagonally to Right-Center)
+                const t = (percent - 0.32) / (0.54 - 0.32);
+                const startX = Math.min(60, vw * 0.08);
+                const targetX = Math.max(20, vw * 0.72);
+                const x = startX + (targetX - startX) * Math.sin(t * Math.PI * 0.5);
+                const y = vh * 0.32 + (vh * 0.45 - vh * 0.32) * t;
+                return { x, y, stage: "LIDAR SCAN: MEDIA ARCHIVE" };
+            } else if (percent < 0.75) {
+                // Section 4: Hardware Topologies & AI Advisor (Glides to Upper-Left)
+                const t = (percent - 0.54) / (0.75 - 0.54);
+                const startX = Math.max(20, vw * 0.72);
+                const targetX = Math.min(70, vw * 0.12);
+                const x = startX + (targetX - startX) * Math.sin(t * Math.PI * 0.5);
+                const y = vh * 0.45 + (vh * 0.28 - vh * 0.45) * t;
+                return { x, y, stage: "ANALYSIS: HARDWARE STACK" };
+            } else if (percent < 0.90) {
+                // Section 5: Program Estimator (Sweeps to Lower-Right)
+                const t = (percent - 0.75) / (0.90 - 0.75);
+                const startX = Math.min(70, vw * 0.12);
+                const targetX = Math.max(20, vw * 0.76);
+                const x = startX + (targetX - startX) * Math.sin(t * Math.PI * 0.5);
+                const y = vh * 0.28 + (vh * 0.62 - vh * 0.28) * t;
+                return { x, y, stage: "ESTIMATING: LAB SCOPE" };
+            } else {
+                // Section 6: Base Footer & Final Transmission (Hover above CTA)
+                const t = (percent - 0.90) / 0.10;
+                const startX = Math.max(20, vw * 0.76);
+                const targetX = Math.max(20, vw * 0.5 - 95);
+                const x = startX + (targetX - startX) * t;
+                const y = vh * 0.62 + (vh * 0.68 - vh * 0.62) * t;
+                return { x, y, stage: "WAYPOINT: BASE TRANSMISSION" };
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = Math.max(0, Math.min(1, winScroll / docHeight));
+            
+            if (scrollBar) scrollBar.style.width = (scrollPercent * 100) + '%';
+
+            // Navbar Blur
+            if (winScroll > 40) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+            }
+
+            // Scroll Velocity & Direction
+            const deltaY = winScroll - lastScrollY;
+            lastScrollY = winScroll;
+
+            const clampedDelta = Math.max(-28, Math.min(28, deltaY));
+            dronePitch = clampedDelta * 0.7;
+
+            // Scroll Waypoint Update (when Autopilot is not overriding)
+            if (!isAutopilot) {
+                const wp = computeScrollWaypoint(scrollPercent);
+                const deltaX = wp.x - droneTargetX;
+                droneTargetTilt = Math.max(-20, Math.min(20, deltaX * 0.15 + clampedDelta * 0.22));
+
+                droneTargetX = wp.x;
+                droneTargetY = wp.y;
+
+                if (telemetryText && !isExploded) {
+                    const alt = (12.4 + (scrollPercent * 28.5)).toFixed(1);
+                    const speed = (Math.abs(clampedDelta) * 0.28 + 1.2).toFixed(1);
+                    telemetryText.innerText = `${wp.stage} // ${alt}m • ${speed}m/s`;
+                }
+            }
+        });
+
+        // 60FPS Lerp Loop for Physics, Hover Wobble & Autopilot
+        function updateDronePhysics() {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+
+            if (isAutopilot) {
+                autopilotAngle += 0.016;
+                // Graceful Lissajous figure-8 patrol across full viewport
+                droneTargetX = Math.max(20, (vw * 0.5 - 95) + Math.sin(autopilotAngle) * (vw * 0.35));
+                droneTargetY = (vh * 0.5 - 70) + Math.sin(autopilotAngle * 2) * (vh * 0.26);
+                droneTargetTilt = Math.cos(autopilotAngle) * 15;
+                dronePitch = -Math.cos(autopilotAngle * 2) * 10;
+            }
+
+            // Smooth 60fps position interpolation
+            droneCurrentX += (droneTargetX - droneCurrentX) * 0.08;
+            droneCurrentY += (droneTargetY - droneCurrentY) * 0.08;
+            droneTilt += (droneTargetTilt - droneTilt) * 0.1;
+            dronePitch += (0 - dronePitch) * 0.06;
+            droneTargetTilt += (0 - droneTargetTilt) * 0.04;
+
+            if (droneAnchor) {
+                // Organic flight wobble (aerodynamic currents)
+                const wobbleX = Math.sin(Date.now() * 0.0022) * 3.5;
+                const wobbleY = Math.cos(Date.now() * 0.0018) * 3.0;
+                droneAnchor.style.transform = `translate3d(${droneCurrentX + wobbleX}px, ${droneCurrentY + wobbleY}px, 0)`;
+            }
+
+            if (droneCraft) {
+                droneCraft.style.transform = `perspective(700px) rotateX(${dronePitch}deg) rotateZ(${droneTilt}deg)`;
+            }
+
+            requestAnimationFrame(updateDronePhysics);
+        }
+        updateDronePhysics();
+
+        /* ========================================================== */
+        /* 3. INTERACTIVE ASSEMBLY / EXPLODED CAD VIEW ENGINE         */
+        /* ========================================================== */
+        function toggleDroneAssembly() {
+            isExploded = !isExploded;
+            const craft = document.getElementById('drone-craft');
+            const label = document.getElementById('assembly-btn-label');
+            const icon = document.getElementById('assembly-btn-icon');
+            const btn = document.getElementById('btn-drone-assembly');
+
+            if (isExploded) {
+                craft.classList.remove('drone-mode-assembled');
+                craft.classList.add('drone-mode-exploded');
+                label.innerText = "Assemble Craft";
+                icon.className = "fa-solid fa-screwdriver-wrench text-[9px]";
+                btn.className = "px-2.5 py-0.5 rounded-lg bg-aero-amber/20 border border-aero-amber/60 text-aero-amber hover:bg-aero-amber hover:text-black transition-all flex items-center gap-1.5 active:scale-95";
+                
+                if (droneStatusDot) droneStatusDot.className = "w-2 h-2 rounded-full bg-aero-amber animate-pulse";
+                if (telemetryText) telemetryText.innerText = "CAD EXPLODED VIEW // 8 MODULAR HARDWARE ASSEMBLIES";
+            } else {
+                craft.classList.remove('drone-mode-exploded');
+                craft.classList.add('drone-mode-assembled');
+                label.innerText = "Explode View";
+                icon.className = "fa-solid fa-cubes-stacked text-[9px]";
+                btn.className = "px-2.5 py-0.5 rounded-lg bg-aero-cyan/20 border border-aero-cyan/50 text-aero-cyan hover:bg-aero-cyan hover:text-black transition-all flex items-center gap-1.5 active:scale-95";
+
+                // Trigger Lock Pulse Ring
+                if (assemblyFlash) {
+                    assemblyFlash.classList.remove('snap-active');
+                    void assemblyFlash.offsetWidth; // Force reflow
+                    assemblyFlash.classList.add('snap-active');
+                }
+
+                if (droneStatusDot) droneStatusDot.className = "w-2 h-2 rounded-full bg-aero-emerald animate-ping";
+                if (telemetryText) telemetryText.innerText = "SYSTEMS ARMED // ALL MODULES LOCKED & CALIBRATED";
+            }
+        }
+
+        /* ========================================================== */
+        /* 4. AUTOPILOT FREE-FLIGHT PATROL TOGGLE                     */
+        /* ========================================================== */
+        function toggleFlightMode() {
+            isAutopilot = !isAutopilot;
+            const btn = document.getElementById('btn-drone-flightmode');
+            const label = document.getElementById('flightmode-btn-label');
+
+            if (isAutopilot) {
+                label.innerText = "Scroll Sync";
+                btn.className = "px-2.5 py-0.5 rounded-lg bg-aero-emerald/25 border border-aero-emerald text-aero-emerald hover:bg-aero-emerald hover:text-black transition-all flex items-center gap-1.5 active:scale-95";
+                if (telemetryText) telemetryText.innerText = "AUTOPILOT PATROL // FULL-SCREEN RECON FLIGHT";
+            } else {
+                label.innerText = "Autopilot";
+                btn.className = "px-2.5 py-0.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:border-aero-emerald/50 transition-all flex items-center gap-1.5 active:scale-95";
+                
+                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = Math.max(0, Math.min(1, winScroll / docHeight));
+                const wp = computeScrollWaypoint(scrollPercent);
+                droneTargetX = wp.x;
+                droneTargetY = wp.y;
+                if (telemetryText) telemetryText.innerText = `${wp.stage} // SCROLL SYNC RE-ENGAGED`;
+            }
+        }
+
+        function triggerDroneAcrobatics() {
+            if (!droneCraft) return;
+            droneCraft.style.transition = "transform 0.85s cubic-bezier(0.4, 0, 0.2, 1)";
+            droneCraft.style.transform = "perspective(700px) rotateY(360deg) scale(1.18)";
+            if (telemetryText) telemetryText.innerText = "PILOT MANEUVER: 360° HIGH-SPEED BARREL ROLL!";
+            setTimeout(() => {
+                droneCraft.style.transition = "";
+            }, 880);
+        }
+
+        /* 2. SCROLL REVEAL OBSERVER */
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        /* 3. LIQUID GLASS MOUSE TRACKING */
+        window.addEventListener('mousemove', (e) => {
+            document.querySelectorAll('.liquid-glass').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                if (x >= -60 && x <= rect.width + 60 && y >= -60 && y <= rect.height + 60) {
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                }
+            });
+        });
+
+        /* 4. REAL PHOTO ARCHIVE & FULLSCREEN LIGHTBOX */
+        const galleryData = [
+            {
+                img: "https://lh3.googleusercontent.com/d/1LvblMr4GV-c4SjurHbkZ2u2e_LWXZgII=w1000",
+                cat: "TECH-FEST CHAMPIONSHIP",
+                title: "First Official Championship Win as BROMATRIX!",
+                desc: "Bromatrix winning 1st place at Amal Jyothi College of Engineering Tech-Fest. Celebrated by the founding hardware team and academic evaluators.",
+                loc: "Amal Jyothi College of Engineering",
+                drive: "Tech-Fest AJEC Folder"
+            },
+            {
+                img: "https://lh3.googleusercontent.com/d/1_s_01SvwCMGeOz7v0y-DUEFBBJyhxtML=w1000",
+                cat: "TROPHY & CEREMONY",
+                title: "Official Trophy Presentation on Main Stage",
+                desc: "State-level competition award presentation recognizing Bromatrix's outstanding execution in autonomous flight and robotics mechatronics.",
+                loc: "Main Auditorium, AJEC",
+                drive: "Tech-Fest AJEC Folder"
+            },
+            {
+                img: "https://lh3.googleusercontent.com/d/18cL5oMkGPYabHiEYLrp7rOwSvwhbgfGW=w1000",
+                cat: "SUMMER INTERNSHIP 2026",
+                title: "Official Inauguration of Summer Internship Program",
+                desc: "Inaugurating the intensive two-week practical internship covering IoT, Autonomous Drones, Robotics, and 3D Prototyping for engineering students.",
+                loc: "Bromatrix Academic Partner Campus",
+                drive: "Summer Internship 2026"
+            },
+            {
+                img: "https://lh3.googleusercontent.com/d/13n1pzm8dnv4nd8fqIzQYcCqt63hIxYhn=w1000",
+                cat: "COHORT TRAINING",
+                title: "Hands-on Microcontroller & Hardware Lab",
+                desc: "Interactive lecture and real-time circuit design session with student engineers testing firmware logic and sensor arrays.",
+                loc: "Engineering Hardware Lab",
+                drive: "Summer Internship 2026"
+            },
+            {
+                img: "https://lh3.googleusercontent.com/d/1NFY6aMm3ysGiNAQFAST6aN2VzjT5dqSl=w1000",
+                cat: "INTERNSHIP 2.0 // LAB",
+                title: "Day 1 Hardware Assembly & Firmware Deploy",
+                desc: "Student engineers assembling sensor breadboard nodes, testing ADC inputs, and deploying C++ firmware with live serial monitor feedback.",
+                loc: "Bromatrix Innovation Lab",
+                drive: "Internship 2.0 (10 Days)"
+            },
+            {
+                img: "https://lh3.googleusercontent.com/d/1TqfPvWOl5UlKmsj3iscYnki5sNk7sa7w=w1000",
+                cat: "HARDWARE SHOWCASE",
+                title: "Autonomous Drone & Rover Field Arena",
+                desc: "Demonstration of student-engineered carbon quadcopters and obstacle-avoiding mobile rovers in live operational flight tests.",
+                loc: "Competition Flight Arena",
+                drive: "Tech-Fest AJEC Folder"
+            }
+        ];
+
+        let currentLightboxIdx = 0;
+
+        function filterGallery(category, btn) {
+            document.querySelectorAll('#gallery-filters .gallery-btn').forEach(b => {
+                b.className = "gallery-btn px-4 py-2 rounded-xl liquid-glass border border-white/10 text-slate-300 hover:text-white font-tech text-xs uppercase tracking-wider transition-all";
+            });
+            btn.className = "gallery-btn active px-4 py-2 rounded-xl bg-aero-cyan text-black font-tech font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)]";
+
+            const items = document.querySelectorAll('#gallery-grid .gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function openLightbox(idx) {
+            currentLightboxIdx = idx;
+            renderLightbox();
+            const modal = document.getElementById('lightbox-modal');
+            const box = document.getElementById('lightbox-box');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-95');
+            box.classList.add('scale-100');
+        }
+
+        function renderLightbox() {
+            const data = galleryData[currentLightboxIdx];
+            document.getElementById('lightbox-img').src = data.img;
+            document.getElementById('lightbox-tag').innerText = data.cat;
+            document.getElementById('lightbox-title').innerText = data.title;
+            document.getElementById('lightbox-desc').innerText = data.desc;
+            document.getElementById('lightbox-loc').innerText = data.loc;
+            document.getElementById('lightbox-drive').innerText = data.drive;
+            document.getElementById('lightbox-counter').innerText = `${currentLightboxIdx + 1} / ${galleryData.length}`;
+        }
+
+        function nextLightbox() {
+            currentLightboxIdx = (currentLightboxIdx + 1) % galleryData.length;
+            renderLightbox();
+        }
+
+        function prevLightbox() {
+            currentLightboxIdx = (currentLightboxIdx - 1 + galleryData.length) % galleryData.length;
+            renderLightbox();
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            const box = document.getElementById('lightbox-box');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+        }
+
+        /* 5. HERO TELEMETRY HUD CHANNELS */
+        const hudConfigs = {
+            drone: {
+                html: `
+                    <div class="flex items-center justify-between text-slate-400 text-[11px]">
+                        <span>FC: <strong class="text-aero-cyan">Betaflight F4 / PX4</strong></span>
+                        <span>TX/RX: <strong class="text-aero-emerald">ELRS 2.4GHz</strong></span>
+                    </div>
+                    <div class="h-28 rounded-xl bg-gradient-to-b from-[#081224] to-[#040710] border border-aero-cyan/30 relative flex items-center justify-center overflow-hidden">
+                        <div class="w-20 h-20 rounded-full border border-aero-cyan/40 flex items-center justify-center relative">
+                            <div class="w-2 h-2 rounded-full bg-aero-cyan shadow-[0_0_8px_#00f0ff]"></div>
+                            <div class="absolute w-28 h-[1px] bg-aero-cyan/60"></div>
+                            <div class="absolute h-28 w-[1px] bg-aero-cyan/60"></div>
+                        </div>
+                        <div class="absolute bottom-2 left-3 text-[10px] text-slate-400">PITCH: <span class="text-aero-cyan">+1.4°</span></div>
+                        <div class="absolute bottom-2 right-3 text-[10px] text-slate-400">ROLL: <span class="text-aero-cyan">-0.2°</span></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                            <div class="text-[10px] text-slate-400">ESC 4x MOTORS</div>
+                            <div class="text-sm font-bold text-white mt-0.5">14,200 RPM</div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                                <div class="bg-aero-cyan h-full w-[65%] rounded-full shadow-[0_0_6px_#00f0ff]"></div>
+                            </div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                            <div class="text-[10px] text-slate-400">BATTERY (4S LiPo)</div>
+                            <div class="text-sm font-bold text-aero-emerald mt-0.5">15.8 V (84%)</div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                                <div class="bg-aero-emerald h-full w-[84%] rounded-full shadow-[0_0_6px_#00e699]"></div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            iot: {
+                html: `
+                    <div class="flex items-center justify-between text-slate-400 text-[11px]">
+                        <span>MCU: <strong class="text-aero-emerald">ESP32-S3 Dual Core</strong></span>
+                        <span>MESH NODES: <strong class="text-aero-cyan">8 Connected</strong></span>
+                    </div>
+                    <div class="h-28 rounded-xl bg-gradient-to-b from-[#061812] to-[#040710] border border-aero-emerald/30 relative flex flex-col justify-center px-4 overflow-hidden">
+                        <div class="text-[11px] text-slate-300 font-mono">SENSOR READOUT: DHT22 & ADC</div>
+                        <div class="text-2xl font-tech font-bold text-aero-emerald mt-1">24.6°C / 58% RH</div>
+                        <div class="text-[10px] text-slate-400 mt-1 flex items-center gap-2">
+                            <span class="text-aero-cyan"><i class="fa-solid fa-wifi"></i> RSSI: -46dBm</span>
+                            <span>• QoS 1 MQTT Online</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                            <div class="text-[10px] text-slate-400">FREE RTOS HEAP</div>
+                            <div class="text-sm font-bold text-aero-cyan mt-0.5">284 KB Free</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                            <div class="text-[10px] text-slate-400">TELEMETRY INTERVAL</div>
+                            <div class="text-sm font-bold text-aero-emerald mt-0.5">100 ms Cycle</div>
+                        </div>
+                    </div>
+                `
+            },
+            rd: {
+                html: `
+                    <div class="flex items-center justify-between text-slate-400 text-[11px]">
+                        <span>FAB BENCH: <strong class="text-aero-amber">Dual-Extruder FDM/SLA</strong></span>
+                        <span>STATUS: <strong class="text-aero-cyan">Layer 182 Complete</strong></span>
+                    </div>
+                    <div class="h-28 rounded-xl bg-gradient-to-b from-[#181106] to-[#040710] border border-aero-amber/30 relative flex flex-col justify-center px-4 overflow-hidden">
+                        <div class="text-[11px] text-slate-300 font-mono">ENCLOSURE: Carbon UAV Canopy</div>
+                        <div class="text-2xl font-tech font-bold text-aero-amber mt-1">NOZZLE: 215°C</div>
+                        <div class="text-[10px] text-slate-400 mt-1 flex items-center gap-2">
+                            <span class="text-aero-emerald">BED: 60°C</span>
+                            <span>• Material: Carbon-PLA</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                            <div class="text-[10px] text-slate-400">PCB ROUTING</div>
+                            <div class="text-sm font-bold text-aero-cyan mt-0.5">CNC Isolation OK</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-white/5 border border-white/5">
+                            <div class="text-[10px] text-slate-400">CAD TOLERANCE</div>
+                            <div class="text-sm font-bold text-aero-emerald mt-0.5">± 0.05 mm</div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        function switchHeroHud(key) {
+            ['drone', 'iot', 'rd'].forEach(k => {
+                const btn = document.getElementById(`hud-btn-${k}`);
+                if (btn) {
+                    if (k === key) {
+                        btn.className = "p-2 rounded-xl bg-aero-cyan/20 border border-aero-cyan text-white text-center flex flex-col items-center gap-1 transition-all";
+                    } else {
+                        btn.className = "p-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white text-center flex flex-col items-center gap-1 transition-all";
+                    }
+                }
+            });
+            document.getElementById('hud-dynamic-view').innerHTML = hudConfigs[key].html;
+        }
+
+        /* 6. HARDWARE SYSTEM TOPOLOGY DIAGRAMS */
+        const archTopologies = {
+            iot: {
+                nodes: [
+                    { title: "Sensor Node & Data Sampling", status: "Analog/Digital Readings (DHT22, Ultrasonic, MPU6050)", color: "text-aero-cyan" },
+                    { title: "ESP32-S3 Dual-Core MCU", status: "ADC Filtering & Firmware C++ Multitasking", color: "text-aero-cyan" },
+                    { title: "Wi-Fi / MQTT Protocol Engine", status: "Sub-40ms Transmission to Cloud Broker", color: "text-aero-emerald" },
+                    { title: "Live Dashboard & Actuator Relays", status: "Relay Switching & Mobile Telemetry Display", color: "text-aero-amber" }
+                ],
+                leftMetric: "Primary Controller: <strong class='text-aero-cyan'>ESP32 Dual-Core 240MHz</strong>",
+                rightMetric: "Hardware Kit: <strong class='text-aero-emerald'>100% Practical Lab</strong>"
+            },
+            drone: {
+                nodes: [
+                    { title: "Transmitter / Telemetry Link", status: "ELRS 2.4GHz RF Signal Intake & Failsafe", color: "text-aero-amber" },
+                    { title: "Flight Controller (Betaflight / PX4)", status: "6-Axis Gyro/Accelerometer PID Calculation", color: "text-aero-cyan" },
+                    { title: "Electronic Speed Controllers (ESCs)", status: "DShot600 High-KV Brushless Motor Regulation", color: "text-aero-emerald" },
+                    { title: "Aerial Stabilization & Waypoints", status: "Stable Flight Dynamics & Camera Payload Gimbal", color: "text-aero-amber" }
+                ],
+                leftMetric: "Flight Control: <strong class='text-aero-cyan'>PID Tuned & Gyro Filtered</strong>",
+                rightMetric: "Aerodynamics: <strong class='text-aero-emerald'>Quadcopter Platform</strong>"
+            },
+            rd: {
+                nodes: [
+                    { title: "Autodesk Fusion 360 CAD Concept", status: "Aerodynamic Canopy & Frame Mechanical Stress", color: "text-purple-400" },
+                    { title: "Multi-Layer PCB Routing & Milling", status: "Circuit Fabrication & Surface-Mount Soldering", color: "text-aero-cyan" },
+                    { title: "Low-Level Firmware Drivers", status: "Bare-Metal Registers & FreeRTOS Threads", color: "text-aero-emerald" },
+                    { title: "Final Field Bench Testing", status: "Thermal Testing & Vibration Stress Validation", color: "text-aero-amber" }
+                ],
+                leftMetric: "Prototyping: <strong class='text-aero-cyan'>CAD to Custom Silicon</strong>",
+                rightMetric: "Validation: <strong class='text-aero-emerald'>Full Diagnostic Bench</strong>"
+            }
+        };
+
+        function switchArch(key) {
+            document.querySelectorAll('.arch-tab').forEach(t => {
+                t.classList.remove('border-aero-cyan', 'text-white');
+                t.classList.add('border-white/5', 'text-slate-400');
+            });
+            const activeTab = document.getElementById(`tab-${key}`);
+            if (activeTab) {
+                activeTab.classList.add('border-aero-cyan', 'text-white');
+                activeTab.classList.remove('border-white/5', 'text-slate-400');
+            }
+
+            const topo = archTopologies[key];
+            const container = document.getElementById('arch-diagram-container');
+            container.innerHTML = topo.nodes.map((n, idx) => `
+                <div class="flex items-center gap-4 p-3.5 rounded-xl bg-white/5 border border-white/5 hover:border-aero-cyan/40 transition-all">
+                    <div class="w-8 h-8 rounded-lg bg-[#020408] border border-white/10 flex items-center justify-center font-bold ${n.color} font-tech text-xs">${idx + 1}</div>
+                    <div class="flex-1">
+                        <div class="text-white font-tech font-bold text-xs tracking-wide">${n.title}</div>
+                        <div class="text-[10px] text-slate-400 font-mono mt-0.5">${n.status}</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-xs text-aero-cyan/50"></i>
+                </div>
+            `).join('');
+
+            document.getElementById('arch-metric-left').innerHTML = topo.leftMetric;
+            document.getElementById('arch-metric-right').innerHTML = topo.rightMetric;
+        }
+
+        /* 7. AI STEM ADVISOR (GEMINI ENGINE WITH FALLBACK) */
+        function setSamplePrompt(text) {
+            document.getElementById('ai-prompt').value = text;
+        }
+
+        async function generateAIArchitecture() {
+            const promptInput = document.getElementById('ai-prompt').value.trim();
+            if (!promptInput) {
+                alert("Please enter your workshop or project idea.");
+                return;
+            }
+
+            const submitBtn = document.getElementById('ai-submit-btn');
+            const responseBox = document.getElementById('ai-response-box');
+            const responseContent = document.getElementById('ai-response-content');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-xs"></i> Processing...`;
+            
+            responseBox.classList.remove('hidden');
+            responseContent.innerHTML = `<div class="flex items-center gap-3 text-aero-cyan font-mono text-xs"><i class="fa-solid fa-gear animate-spin"></i> Consulting Bromatrix STEM & Hardware Knowledge Engine...</div>`;
+
+            const systemPrompt = "You are the Lead Hardware Engineer at Bromatrix Innovation Hub. Provide a crisp, structured, practical outline covering: 1) Recommended Curriculum/Syllabus Modules, 2) Key Hardware & Components Stack (Sensors, MCUs, Motors, 3D Parts), and 3) Practical Hands-on Outcomes for the user's request. Use clean HTML tags like <strong>, <ul>, and <li>. Keep it clear, professional, and direct.";
+
+            const apiKey = ""; // Automatic environment injection
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: promptInput }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            let attempts = 0;
+            const maxAttempts = 3;
+            let success = false;
+
+            while (attempts < maxAttempts && !success) {
+                try {
+                    attempts++;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const result = await response.json();
+                    const candidate = result.candidates?.[0];
+
+                    if (candidate && candidate.content?.parts?.[0]?.text) {
+                        responseContent.innerHTML = candidate.content.parts[0].text;
+                        success = true;
+                    } else {
+                        throw new Error("Invalid response");
+                    }
+                } catch (err) {
+                    if (attempts >= maxAttempts) {
+                        responseContent.innerHTML = `
+                            <div class="space-y-3 font-mono text-xs">
+                                <div class="text-aero-cyan font-tech font-bold text-sm">BROMATRIX CURRICULUM BLUEPRINT // PROPOSED ARCHITECTURE</div>
+                                <p class="text-slate-300">Based on: "<em>${promptInput}</em>", Bromatrix recommends the following standardized hardware implementation stack:</p>
+                                <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
+                                    <div class="text-aero-emerald font-bold">1. Recommended Module Breakdown:</div>
+                                    <ul class="list-disc pl-4 space-y-1 text-slate-300 font-sans">
+                                        <li><strong>Day 1:</strong> Circuit Fundamentals, Microcontroller Architecture (ESP32-S3 / STM32), GPIO, and ADC sampling.</li>
+                                        <li><strong>Day 2:</strong> Communication Protocols (I2C, SPI, UART) + FreeRTOS Multitasking + Actuator Control.</li>
+                                        <li><strong>Day 3:</strong> Autonomous PID Control Loops, Telemetry transmission, and Live Field Testing.</li>
+                                    </ul>
+                                </div>
+                                <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                                    <div class="text-aero-amber font-bold">2. Suggested Hardware Kit Stack:</div>
+                                    <p class="text-slate-400 font-sans">ESP32-S3 Dual Core Dev Board, 6-Axis MPU6050 Gyro, Ultrasonic Obstacle Sensor, Dual H-Bridge Motor Driver, 3D Printed Chassis, and 12V LiPo Power Bench.</p>
+                                </div>
+                                <div class="text-[11px] text-aero-cyan pt-2">
+                                    <i class="fa-solid fa-circle-info"></i> Contact Bromatrix via 'Book Lab' for official syllabus accreditation and customized institution kits.
+                                </div>
+                            </div>
+                        `;
+                        success = true;
+                    } else {
+                        await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempts)));
+                    }
+                }
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles text-xs"></i> <span>Generate Plan</span>`;
+        }
+
+        /* 8. SCOPE & TIMELINE CALCULATOR */
+        let calcState = {
+            type: 'school',
+            multiplier: 2,
+            addons: { kits: false, drone: false, '3d': false, cert: false }
+        };
+
+        function updateCalc(key, val, el) {
+            calcState[key] = val;
+            document.querySelectorAll('#calc-type-group .calc-type-btn').forEach(btn => {
+                btn.className = "calc-type-btn p-3 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white text-xs font-tech font-medium text-center transition-all";
+            });
+            el.className = "calc-type-btn active p-3 rounded-xl bg-aero-cyan/20 border border-aero-cyan text-white text-xs font-tech font-bold text-center transition-all";
+            recalculateEstimate();
+        }
+
+        function updateCalcRange(val) {
+            calcState.multiplier = parseInt(val);
+            const labels = ["25 Students", "50 Students", "150 Students", "300+ Students"];
+            document.getElementById('concurrency-label').innerText = labels[val - 1];
+            recalculateEstimate();
+        }
+
+        function toggleAddon(key, isChecked) {
+            calcState.addons[key] = isChecked;
+            recalculateEstimate();
+        }
+
+        function recalculateEstimate() {
+            let daysMin = 2;
+            let daysMax = 3;
+            let mode = "Hands-On Practical Lab";
+
+            if (calcState.type === 'rd') {
+                daysMin = 2;
+                daysMax = 4;
+                mode = "R&D Prototype Development";
+            } else if (calcState.type === 'curriculum') {
+                daysMin = 5;
+                daysMax = 10;
+                mode = "Full Syllabus & Lab Setup";
+            }
+
+            if (calcState.multiplier === 3) daysMax += 2;
+            if (calcState.multiplier === 4) daysMax += 4;
+
+            document.getElementById('est-time').innerText = `${daysMin} - ${daysMax} Days / Duration`;
+            document.getElementById('est-cost').innerText = mode;
+        }
+
+        /* 9. MODALS & FORMS */
+        function openModal(category = 'general') {
+            const modal = document.getElementById('contact-modal');
+            const box = document.getElementById('modal-box');
+            const tag = document.getElementById('modal-category-tag');
+            
+            if (category === 'training') tag.innerText = "WORKSHOP & TRAINING ENQUIRY";
+            else if (category === 'rd') tag.innerText = "CUSTOM R&D & HARDWARE PROTOTYPING";
+            else if (category === 'internship') tag.innerText = "FLAGSHIP INTERNSHIP BATCH ENQUIRY";
+            else tag.innerText = "BROMATRIX GENERAL ENQUIRY";
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-95');
+            box.classList.add('scale-100');
+        }
+
+        function openModalWithEstimate() {
+            const mode = document.getElementById('est-cost').innerText;
+            const time = document.getElementById('est-time').innerText;
+            const summary = document.getElementById('modal-project-summary');
+            if (summary) {
+                summary.value = `Enquiry: ${mode} | Estimated Duration: ${time} | Batch: ${document.getElementById('concurrency-label').innerText}`;
+            }
+            openModal('training');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('contact-modal');
+            const box = document.getElementById('modal-box');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('modal-success').classList.remove('hidden');
+            setTimeout(() => {
+                closeModal();
+                document.getElementById('modal-success').classList.add('hidden');
+                document.getElementById('contact-form').reset();
+            }, 2400);
+        }
+
+        // Mobile Drawer
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            });
+        });
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                const lb = document.getElementById('lightbox-modal');
+                if (!lb.classList.contains('pointer-events-none')) nextLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                const lb = document.getElementById('lightbox-modal');
+                if (!lb.classList.contains('pointer-events-none')) prevLightbox();
+            }
+        });
+
+        // Initialization
+        window.onload = function() {
+            switchArch('iot');
+            recalculateEstimate();
+        };
+    </script>
+</body>
+</html>
